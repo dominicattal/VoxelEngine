@@ -1,6 +1,8 @@
-#include <iostream>
+#include <glad.h>
+#include <glfw.h>
 
 int main() {
-    std::cout << "Hello World" << std::endl;
-    return 0;
+    glfwInit();
+
+    return 1;
 }
