@@ -59,7 +59,6 @@ Rect::Rect(const char* image_path, Shader* _shader)
 
 void Rect::draw(float x)
 {
-    /*
     const float model[] = {
         1.0f, 0, 0, 0,
         0, 1.0f, 0, 0,
@@ -70,7 +69,7 @@ void Rect::draw(float x)
         1.0f, 0, 0, 0,
         0, 1.0f, 0, 0,
         0, 0, 1.0f, 0,
-        0, 0, -3.0f, 1.0f
+        0, 0, 3.0f, 1.0f
     };
     float a = 1; //aspect ratio width / height
     float fov = 45 * PI / 180; //vertical cam angle
@@ -84,10 +83,10 @@ void Rect::draw(float x)
     const float pers[] = {
         v1, 0, 0, 0,
         0, v2, 0, 0,
-        0, 0, v3, v4,
-        0, 0, 1, 0
+        0, 0, v3, 1,
+        0, 0, v4, 0
     };
-    */
+    
     shader->use();
     unsigned int modelID = glGetUniformLocation(shader->ID, "model");
     glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
