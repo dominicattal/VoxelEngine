@@ -4,8 +4,9 @@
 std::map<int, std::string> errors =
 {
     {0, "Invalid error code"},
-    {1, "Failed to initalize window"},
-    {2, "Failed to load Glad"}
+    {1, "Failed to initalize glfw"},
+    {2, "Failed to initalize window"},
+    {3, "Failed to load Glad"}
 };
 
 void throwError(int error_code)
