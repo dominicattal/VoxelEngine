@@ -47,7 +47,14 @@ int main()
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
 
-    //cameraPos = vec3(0.0f, 0.0f, 3.0f);
+    vec3f camera_pos(0.0f, 0.0f, 3.0f);
+    vec3f camera_target(0.0f, 0.0f, 0.0f);
+    vec3f camera_direction = normalize(camera_target - camera_pos);
+    
+    vec3f test1(1, 2, 3);
+    vec3f test2(4, 5, 6);
+    vec3f test3 = normalize(test1 * test2);
+    std::cout << test3 << std::endl;
     
     Rect square("assets/test.png", shader);
 
