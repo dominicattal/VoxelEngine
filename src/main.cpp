@@ -6,9 +6,11 @@
 
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void updateDeltaTime();
 
 int window_width  = 800;
 int window_height = 600;
+float dt = 0, frame_time;
 
 int main() 
 {
@@ -33,6 +35,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
+    frame_time = glfwGetTime();
 
     while (!glfwWindowShouldClose(window))
     {
@@ -40,6 +43,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         shader.use();
+        updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
@@ -61,4 +65,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
     window_width = width;
     window_height = height;
+}
+
+void updateDeltaTime()
+{
+    float current_time = glfwGetTime();
+    dt = current_time - frame_time;
+    frame_time = current_time;
 }
