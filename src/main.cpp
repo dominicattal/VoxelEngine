@@ -2,6 +2,7 @@
 #include <glfw.h>
 #include <iostream>
 #include "error.h"
+#include "Shader.h"
 
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -31,11 +32,14 @@ int main()
     glViewport(0, 0, window_width, window_height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
+    Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
+
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        shader.use();
         glfwPollEvents();
         glfwSwapBuffers(window);
     }

@@ -11,7 +11,10 @@ inline std::map<int, std::string> errors =
     {1, "Failed to initalize glfw"},
     {2, "Failed to initalize window"},
     {3, "Failed to load Glad"},
-    {4, "Error reading shader programs"}
+    {4, "Error reading shader programs"},
+    {5, "Shader vertex compilation failed"},
+    {6, "Shader fragment compilation failed"},
+    {7, "Error linking shader programs"}
 };
 
 inline void throwError(int error_code)
@@ -20,6 +23,23 @@ inline void throwError(int error_code)
     {
         std::cout << "Error code " << error_code << ": " 
                 << errors[error_code] << std::endl;
+    } 
+    else
+    {
+        std::cout << "Error code 0: " << errors[0] 
+                << " (" << error_code << ")" << std::endl;
+    }
+
+    exit(error_code);
+}
+
+inline void throwError(int error_code, char* info)
+{
+    if (errors.find(error_code) != errors.end())
+    {
+        std::cout << "Error code " << error_code << ": " 
+                << errors[error_code] << std::endl;
+        std::cout << "Info -> " << info;
     } 
     else
     {
