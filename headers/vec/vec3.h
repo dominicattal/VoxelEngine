@@ -32,13 +32,13 @@ public:
     }
 };
 
-std::ostream& operator<<(std::ostream& out, vec3f& vec)
+inline std::ostream& operator<<(std::ostream& out, vec3f& vec)
 {
     out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
     return out;
 }
 
-std::ostream& operator<<(std::ostream& out, vec3i& vec)
+inline std::ostream& operator<<(std::ostream& out, vec3i& vec)
 {
     out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
     return out;

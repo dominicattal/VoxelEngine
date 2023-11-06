@@ -1,11 +1,12 @@
 #include <glad.h>
 #include <glfw.h>
 #include <iostream>
-#include "error.h"
-#include "Shader.h"
 #include <vec/vec2.h>
 #include <vec/vec3.h>
 #include <vec/vec4.h>
+#include "error.h"
+#include "Shader.h"
+#include "VAO.h"
 
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -38,8 +39,6 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
-    vec4f test(3, 5.5, 6, 9);
-    std::cout << test << std::endl;
 
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
@@ -47,6 +46,7 @@ int main()
          0.0f,  0.5f, 0.0f
     };
 
+    VAO b;
     unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
