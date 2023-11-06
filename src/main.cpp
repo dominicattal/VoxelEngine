@@ -13,7 +13,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void updateDeltaTime();
 
 int window_width  = 800;
-int window_height = 600;
+int window_height = 800;
 float dt = 0, frame_time;
 
 int main() 
@@ -39,19 +39,6 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
-
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
-    };
-
-    float vertices2[] = {
-        -0.8f, -0.8f, 0.0f,
-        -0.8f, 0.8f, 0.0f,
-         0.8f, 0.8f, 0.0f,
-         0.8f, -0.8f, 0.0f
-    };
     
     Rect square;
 
@@ -66,6 +53,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
+        square.draw();
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
