@@ -1,5 +1,7 @@
 #include "Rect.h"
 #include <iostream>
+#include <cmath>
+#define PI 3.141592659
 
 Rect::Rect(const char* image_path, Shader* _shader)
 {
@@ -55,25 +57,44 @@ Rect::Rect(const char* image_path, Shader* _shader)
     glBindTexture(GL_TEXTURE_2D, texture);  
 }
 
-void Rect::draw()
+void Rect::draw(float x)
 {
+    /*
     const float model[] = {
-        1.0f, 0, 0, 0,
-        0, 1.0f, 0, 0,
-        0, 0, 1.0f, 0,
-        0.5f, 0, 0, 1.0f
-    };
-    const float view[] = {
         1.0f, 0, 0, 0,
         0, 1.0f, 0, 0,
         0, 0, 1.0f, 0,
         0, 0, 0, 1.0f
     };
+    const float view[] = {
+        1.0f, 0, 0, 0,
+        0, 1.0f, 0, 0,
+        0, 0, 1.0f, 0,
+        0, 0, -3.0f, 1.0f
+    };
+    float a = 1; //aspect ratio width / height
+    float fov = 45 * PI / 180; //vertical cam angle
+    float nz = 0.1f; // near clipping
+    float fz = 100.0f; //far clipping
+    float v1, v2, v3, v4;
+    v1 = 1 / (a * tan(fov / 2));
+    v2 = 1 / (tan(fov / 2));
+    v3 = (-nz - fz) / (nz - fz);
+    v4 = (2 * fz * nz) / (nz - fz);
+    const float pers[] = {
+        v1, 0, 0, 0,
+        0, v2, 0, 0,
+        0, 0, v3, v4,
+        0, 0, 1, 0
+    };
+    */
     shader->use();
     unsigned int modelID = glGetUniformLocation(shader->ID, "model");
     glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
     unsigned int viewID = glGetUniformLocation(shader->ID, "view");
     glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
+    unsigned int persID = glGetUniformLocation(shader->ID, "perspective");
+    glUniformMatrix4fv(persID, 1, GL_FALSE, pers);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
