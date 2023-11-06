@@ -45,7 +45,7 @@ int main()
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     
-    Rect square("assets/test.png");
+    Rect square("assets/test.png", shader);
 
     frame_time = glfwGetTime();
 
