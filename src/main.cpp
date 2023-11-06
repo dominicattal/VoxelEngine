@@ -50,13 +50,14 @@ int main()
     vec3f camera_pos(0.0f, 0.0f, 3.0f);
     vec3f camera_target(0.0f, 0.0f, 0.0f);
     vec3f camera_direction = normalize(camera_target - camera_pos);
+    vec3f camera_right = vec3f(1.0f, 0.0f, 0.0f);
+    vec3f camera_up = camera_direction * camera_right;
+
+    std::cout << camera_direction << std::endl;
+    std::cout << camera_right << std::endl;
+    std::cout << camera_up << std::endl;
     
-    vec3f test1(1, 2, 3);
-    vec3f test2(4, 5, 6);
-    vec3f test3 = normalize(test1 * test2);
-    std::cout << test3 << std::endl;
-    
-    Rect square("assets/test.png", shader);
+    Rect square("assets/test.png", &shader);
 
     frame_time = glfwGetTime();
 
@@ -69,7 +70,6 @@ int main()
         processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        shader.use();
         square.draw();
         updateDeltaTime();
         glfwPollEvents();

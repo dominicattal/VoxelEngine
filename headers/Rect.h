@@ -12,8 +12,9 @@
 class Rect
 {
     unsigned int VAO, VBO, EBO;
+    Shader* shader;
 public:
-    Rect(const char* image_path, Shader shader);
+    Rect(const char* image_path, Shader* shader);
     void draw();
 };
 

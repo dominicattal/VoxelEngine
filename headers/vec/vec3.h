@@ -58,7 +58,8 @@ inline vec3f normalize(vec3f vec)
 
 inline std::ostream& operator<<(std::ostream& out, vec3f& vec)
 {
-    out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
+    float mag = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
+    out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ") [" << mag << "]";
     return out;
 }
 
