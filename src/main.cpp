@@ -3,6 +3,8 @@
 #include <iostream>
 #include "error.h"
 
+void processInput(GLFWwindow* window);
+
 int main() 
 {
     // initialize glfw
@@ -18,10 +20,17 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
+        processInput(window);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     glfwTerminate();
     return 1;
+}
+
+void processInput(GLFWwindow* window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 }
