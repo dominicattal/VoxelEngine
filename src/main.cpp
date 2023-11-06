@@ -10,6 +10,7 @@
 
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_button_callback(GLFWwindow* window, int button, int actions, int mods);
 void updateDeltaTime();
 
 int window_width  = 800;
@@ -42,8 +43,11 @@ int main()
 
     glViewport(0, 0, window_width, window_height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
+
+    //cameraPos = vec3(0.0f, 0.0f, 3.0f);
     
     Rect square("assets/test.png", shader);
 
@@ -82,6 +86,12 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
     window_width = width;
     window_height = height;
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        std::cout << 1 / dt << std::endl;
 }
 
 void updateDeltaTime()

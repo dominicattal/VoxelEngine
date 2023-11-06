@@ -54,8 +54,8 @@ Rect::Rect(const char* image_path, Shader shader)
     glBindTexture(GL_TEXTURE_2D, texture);
 
     const float mat[] = {
-        1.0f, 0, 0, 0,
-        0, 1.0f, 0, 0,
+        0.707, -0.707, 0, 0,
+        0.707, 0.707f, 0, 0,
         0, 0, 1.0f, 0,
         0, 0, 0, 1.0f
     };
