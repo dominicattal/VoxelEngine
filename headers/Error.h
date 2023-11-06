@@ -1,3 +1,6 @@
+#ifndef ERROR_H
+#define ERROR_H
+
 #include <map>
 #include <iostream>
 
@@ -24,3 +27,5 @@ void throwError(int error_code)
 
     exit(error_code);
 }
+
+#endif /* ERROR_H */
