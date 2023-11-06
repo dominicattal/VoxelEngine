@@ -35,16 +35,22 @@ int main()
     if (!gladLoadGL(glfwGetProcAddress))
         throwError(3);
 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     glViewport(0, 0, window_width, window_height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     
-    Rect square;
+    Rect square("assets/test.png");
 
     frame_time = glfwGetTime();
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glEnable(GL_DEPTH_TEST);
 
     while (!glfwWindowShouldClose(window))
