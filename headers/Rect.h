@@ -15,7 +15,7 @@ class Rect
     Shader* shader;
 public:
     Rect(const char* image_path, Shader* shader);
-    void draw(float x);
+    void draw();
 };
 
 #endif /* RECT_H */

@@ -57,19 +57,19 @@ Rect::Rect(const char* image_path, Shader* _shader)
     glBindTexture(GL_TEXTURE_2D, texture);  
 }
 
-void Rect::draw(float x)
+void Rect::draw()
 {
     const float model[] = {
-        1.0f, 0, 0, 0,
-        0, 1.0f, 0, 0,
-        0, 0, 1.0f, 0,
-        0, 0, 0, 1.0f
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 0, 1
     };
     const float view[] = {
         1.0f, 0, 0, 0,
         0, 1.0f, 0, 0,
         0, 0, 1.0f, 0,
-        0, 0, 3.0f, 1.0f
+        0, 0, 4, 1.0f
     };
     float a = 1; //aspect ratio width / height
     float fov = 45 * PI / 180; //vertical cam angle

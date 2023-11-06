@@ -16,7 +16,6 @@ void updateDeltaTime();
 int window_width  = 800;
 int window_height = 800;
 float dt = 0, frame_time;
-float x = -1.0;
 
 int main() 
 {
@@ -54,10 +53,6 @@ int main()
     vec3f camera_right = vec3f(1.0f, 0.0f, 0.0f);
     vec3f camera_up = camera_direction * camera_right;
 
-    std::cout << camera_direction << std::endl;
-    std::cout << camera_right << std::endl;
-    std::cout << camera_up << std::endl;
-    
     Rect square("assets/test.jpg", &shader);
 
     frame_time = glfwGetTime();
@@ -71,7 +66,7 @@ int main()
         processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        square.draw(x);
+        square.draw();
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -99,10 +94,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-    {
-        x -= 0.01;
-        std::cout << x << std::endl;
-    }
+        std::cout << 1 / dt << std::endl;
 }
 
 void updateDeltaTime()
