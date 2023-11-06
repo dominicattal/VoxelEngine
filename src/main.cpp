@@ -11,11 +11,19 @@
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int actions, int mods);
+void updateProjectionMatrix(Shader shader);
+void updateViewMatrix();
 void updateDeltaTime();
 
 int window_width  = 800;
 int window_height = 800;
 float dt = 0, frame_time;
+
+vec3f camera_pos(0.0f, 0.0f, 3.0f);
+vec3f camera_target(0.0f, 0.0f, 0.0f);
+vec3f camera_direction = normalize(camera_target - camera_pos);
+vec3f camera_right = vec3f(1.0f, 0.0f, 0.0f);
+vec3f camera_up = camera_direction * camera_right;
 
 int main() 
 {
@@ -47,12 +55,6 @@ int main()
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
 
-    vec3f camera_pos(0.0f, 0.0f, 3.0f);
-    vec3f camera_target(0.0f, 0.0f, 0.0f);
-    vec3f camera_direction = normalize(camera_target - camera_pos);
-    vec3f camera_right = vec3f(1.0f, 0.0f, 0.0f);
-    vec3f camera_up = camera_direction * camera_right;
-
     Rect square("assets/test.jpg", &shader);
 
     frame_time = glfwGetTime();
@@ -66,6 +68,7 @@ int main()
         processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        updateProjectionMatrix(shader);
         square.draw();
         updateDeltaTime();
         glfwPollEvents();
@@ -81,6 +84,8 @@ void processInput(GLFWwindow* window)
     // Handles keyboard inputs
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        dt = dt;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -95,6 +100,35 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
         std::cout << 1 / dt << std::endl;
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+        std::cout << 1 / dt << std::endl;
+}
+
+void updateProjectionMatrix(Shader shader)
+{
+    // update shader projection matrix
+    float aspect_ratio = window_width / window_height;
+    float fov = 0.785398; 
+    float near_clip_dis = 0.1f; 
+    float far_clip_dis = 100.0f; 
+    float v1, v2, v3, v4;
+    v1 = 1 / (aspect_ratio * tan(fov / 2));
+    v2 = 1 / (tan(fov / 2));
+    v3 = (-near_clip_dis - far_clip_dis) / (near_clip_dis - far_clip_dis);
+    v4 = (2 * far_clip_dis * near_clip_dis) / (near_clip_dis - far_clip_dis);
+    const float proj[] = {
+        v1, 0, 0, 0,
+        0, v2, 0, 0,
+        0, 0, v3, 1,
+        0, 0, v4, 0
+    };
+    unsigned int projID = glGetUniformLocation(shader.ID, "perspective");
+    glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
+}
+
+void updateViewMatrix()
+{
+
 }
 
 void updateDeltaTime()
