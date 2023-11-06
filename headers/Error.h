@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ERROR_H
 #define ERROR_H
 
@@ -9,7 +10,8 @@ std::map<int, std::string> errors =
     {0, "Invalid error code"},
     {1, "Failed to initalize glfw"},
     {2, "Failed to initalize window"},
-    {3, "Failed to load Glad"}
+    {3, "Failed to load Glad"},
+    {4, "Error reading shader programs"}
 };
 
 void throwError(int error_code)
