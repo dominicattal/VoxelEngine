@@ -5,7 +5,7 @@
 #include <map>
 #include <iostream>
 
-std::map<int, std::string> errors =
+inline std::map<int, std::string> errors =
 {
     {0, "Invalid error code"},
     {1, "Failed to initalize glfw"},
@@ -14,7 +14,7 @@ std::map<int, std::string> errors =
     {4, "Error reading shader programs"}
 };
 
-void throwError(int error_code)
+inline void throwError(int error_code)
 {
     if (errors.find(error_code) != errors.end())
     {
