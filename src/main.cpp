@@ -12,14 +12,14 @@
 void processInput(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_button_callback(GLFWwindow* window, int button, int actions, int mods);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void updateProjectionMatrix(Shader shader);
-void updateViewMatrix(Shader shaders);
+void updateViewMatrix(Shader shader);
 void updateDeltaTime();
 
 int window_width  = 800;
 int window_height = 800;
 float dt = 0, frame_time;
-float fov = 0.785398; 
 Camera camera;
 
 int main() 
@@ -36,6 +36,7 @@ int main()
     if (window == NULL)
         throwError(2);
     glfwMakeContextCurrent(window);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
 
     // initalize glad
     if (!gladLoadGL(glfwGetProcAddress))
@@ -49,6 +50,7 @@ int main()
     glViewport(0, 0, window_width, window_height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
 
@@ -112,10 +114,16 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         std::cout << 1 / dt << std::endl;
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    
+}
+
 void updateProjectionMatrix(Shader shader)
 {
     // update shader projection matrix
     float aspect_ratio = window_width / window_height;
+    float fov = camera.fov;
     float near_clip_dis = 0.1f; 
     float far_clip_dis = 100.0f; 
     float v1, v2, v3, v4;
