@@ -65,12 +65,6 @@ void Rect::draw()
         0, 1, 0, 0,
         0, 0, 0, 1
     };
-    const float view[] = {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 4, 1
-    };
     /*
     float a = 1; //aspect ratio width / height
     float fov = 45 * PI / 180; //vertical cam angle
@@ -92,8 +86,6 @@ void Rect::draw()
     shader->use();
     unsigned int modelID = glGetUniformLocation(shader->ID, "model");
     glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
-    unsigned int viewID = glGetUniformLocation(shader->ID, "view");
-    glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
