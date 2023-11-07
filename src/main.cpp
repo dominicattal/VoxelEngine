@@ -1,6 +1,7 @@
 #include <glad.h>
 #include <glfw.h>
 #include <iostream>
+#include <cmath>
 #include <vec/vec2.h>
 #include <vec/vec3.h>
 #include <vec/vec4.h>
@@ -21,6 +22,12 @@ int window_width  = 800;
 int window_height = 800;
 float dt = 0, frame_time;
 Camera camera;
+
+int mouse_x = window_width / 2;
+int mouse_y = window_height / 2;
+
+float yaw = -1.57079632679;
+float pitch = 0.0f;
 
 int main() 
 {
@@ -116,7 +123,29 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    
+    float xoffset = xpos - mouse_x;
+    float yoffset = ypos - mouse_y;
+    mouse_x = xpos;
+    mouse_y = ypos;
+
+    float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += xoffset;
+    pitch += yoffset;
+
+    if(pitch > 1.57079632679)
+        pitch = 1.57079632679;
+    if(pitch < -1.57079632679)
+        pitch = -1.57079632679;
+
+    vec3f direction;
+    direction.x = cos(yaw) * cos(pitch);
+    direction.y = sin(pitch);
+    direction.z = sin(yaw) * cos(pitch);
+    direction = normalize(direction);
+    std::cout << direction << std::endl;
 }
 
 void updateProjectionMatrix(Shader shader)
