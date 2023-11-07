@@ -3,6 +3,7 @@
 #define VEC2_H
 
 #include <ostream>
+#include <cmath>
 
 class vec2f 
 {
@@ -15,6 +16,10 @@ public:
     vec2f() 
     { 
         x = 0; y = 0; 
+    }
+    vec2f operator*(const float& num)
+    {
+        return vec2f(x * num, y * num);
     }
 };
 
@@ -31,6 +36,15 @@ public:
         x = 0; y = 0; 
     }
 };
+
+inline vec2f normalize(vec2f vec)
+{
+    float mag = sqrt(vec.x*vec.x + vec.y*vec.y);
+    if (mag != 0)
+        return vec2f(vec.x / mag, vec.y / mag);
+    return vec2f();
+}
+
 
 inline std::ostream& operator<<(std::ostream& out, vec2f& vec)
 {

@@ -4,16 +4,18 @@
 Camera::Camera()
 {
     position = vec3f(0.0f, 0.0f, 3.0f);
-    yaw = 0.0f;
-    pitch = 0.0f;
+    yaw = 0.0;
+    pitch = 0.0;
     fov = 0.785398;
+    sensitivity = 0.001;
+    speed = 0.5;
     turn(0, 0);
 }
 
 void Camera::turn(float x_offset, float y_offset)
 {
-    yaw += x_offset;
-    pitch += y_offset;
+    yaw += x_offset * sensitivity;
+    pitch += y_offset * sensitivity;
 
     if(pitch > 1.56)
         pitch = 1.56;
@@ -26,6 +28,31 @@ void Camera::turn(float x_offset, float y_offset)
     direction = normalize(direction);
 
     update();
+}
+
+void Camera::move(Dir dir, float dt)
+{
+    switch (dir)
+    {
+        case LEFT:
+            position -= right * dt;
+            break;
+        case RIGHT:
+            position += right * dt;
+            break;
+        case UP:
+            position += up * dt;
+            break;
+        case DOWN:
+            position -= up * dt;
+            break;
+        case FORWARD:
+            position += direction * dt;
+            break;
+        case BACKWARD:
+            position -= direction * dt;
+            break;
+    } 
 }
 
 void Camera::update()

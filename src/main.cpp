@@ -23,8 +23,8 @@ int window_height = 800;
 float dt = 0, frame_time;
 Camera camera;
 
-int mouse_x = window_width / 2;
-int mouse_y = window_height / 2;
+float mouse_x = window_width / 2;
+float mouse_y = window_height / 2;
 
 int main() 
 {
@@ -90,17 +90,17 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.position.y -= move_speed * dt;
+        camera.move(UP, dt);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.position.y += move_speed * dt;
+        camera.move(DOWN, dt);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.position.x += move_speed * dt;
+        camera.move(LEFT, dt);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.position.x -= move_speed * dt;
+        camera.move(RIGHT, dt);
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        camera.position.z -= move_speed * dt;
+        camera.move(FORWARD, dt);
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        camera.position.z += move_speed * dt;
+        camera.move(BACKWARD, dt);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -121,16 +121,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    float xoffset = mouse_x - xpos;
-    float yoffset = mouse_y - ypos;
+    float x_offset = mouse_x - xpos;
+    float y_offset = mouse_y - ypos;
     mouse_x = xpos;
     mouse_y = ypos;
-
-    float sensitivity = 0.001f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    camera.turn(xoffset, yoffset);
+    camera.turn(x_offset, y_offset);
 }
 
 void updateProjectionMatrix(Shader shader)

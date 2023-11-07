@@ -21,9 +21,17 @@ public:
     {
         return vec3f(x + other.x, y + other.y, z + other.z);
     }
+    void operator+=(const vec3f& other)
+    {
+        x += other.x; y += other.y; z += other.z;
+    }
     vec3f operator-(const vec3f& other)
     {
         return vec3f(x - other.x, y - other.y, z - other.z);
+    }
+    void operator-=(const vec3f& other)
+    {
+        x -= other.x; y -= other.y; z -= other.z;
     }
     vec3f operator*(const vec3f& other)
     {
@@ -31,6 +39,10 @@ public:
         float _y = z * other.x - x * other.z;
         float _z = x * other.y - y * other.x;
         return vec3f(_x, _y, _z);
+    }
+    vec3f operator*(const float& num)
+    {
+        return vec3f(x * num, y * num, z * num);
     }
 };
 
