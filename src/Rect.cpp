@@ -55,38 +55,19 @@ Rect::Rect(const char* image_path, Shader* _shader)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     glBindTexture(GL_TEXTURE_2D, texture);  
+    const float model[] = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    };
+    shader->use();
+    unsigned int modelID = glGetUniformLocation(shader->ID, "model");
+    glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
 }
 
 void Rect::draw()
 {
-    const float model[] = {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 0, 1
-    };
-    /*
-    float a = 1; //aspect ratio width / height
-    float fov = 45 * PI / 180; //vertical cam angle
-    float nz = 0.1f; // near clipping
-    float fz = 100.0f; //far clipping
-    float v1, v2, v3, v4;
-    v1 = 1 / (a * tan(fov / 2));
-    v2 = 1 / (tan(fov / 2));
-    v3 = (-nz - fz) / (nz - fz);
-    v4 = (2 * fz * nz) / (nz - fz);
-    const float pers[] = {
-        v1, 0, 0, 0,
-        0, v2, 0, 0,
-        0, 0, v3, 1,
-        0, 0, v4, 0
-    };
-    */
-    
-    shader->use();
-    unsigned int modelID = glGetUniformLocation(shader->ID, "model");
-    glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
-
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

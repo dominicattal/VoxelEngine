@@ -60,6 +60,7 @@ int main()
     glfwSetCursorPosCallback(window, mouse_callback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
+    updateProjectionMatrix(shader);
 
     Rect square("assets/test.jpg", &shader);
 
@@ -74,7 +75,6 @@ int main()
         processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        updateProjectionMatrix(shader);
         updateViewMatrix(shader);
         square.draw();
         updateDeltaTime();
@@ -135,22 +135,23 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     yaw += xoffset;
     pitch += yoffset;
 
-    if(pitch > 1.57079632679)
-        pitch = 1.57079632679;
-    if(pitch < -1.57079632679)
-        pitch = -1.57079632679;
+    if(pitch > 1.56)
+        pitch = 1.56;
+    if(pitch < -1.56)
+        pitch = -1.56;
 
     vec3f direction;
     direction.x = cos(yaw) * cos(pitch);
     direction.y = sin(pitch);
     direction.z = sin(yaw) * cos(pitch);
     direction = normalize(direction);
-    std::cout << direction << std::endl;
+    camera.direction = direction;
 }
 
 void updateProjectionMatrix(Shader shader)
 {
     // update shader projection matrix
+    shader.use();
     float aspect_ratio = window_width / window_height;
     float fov = camera.fov;
     float near_clip_dis = 0.1f; 
@@ -172,6 +173,7 @@ void updateProjectionMatrix(Shader shader)
 
 void updateViewMatrix(Shader shader)
 {
+    shader.use();
     const float view[] = {
         1, 0, 0, 0,
         0, 1, 0, 0,
