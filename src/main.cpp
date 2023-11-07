@@ -86,21 +86,22 @@ int main()
 void processInput(GLFWwindow* window)
 {
     // Handles keyboard inputs
-    float move_speed = 0.5;
+    vec3f moving;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.move(UP, dt);
+        moving.z -= 1;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.move(DOWN, dt);
+        moving.z += 1;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.move(LEFT, dt);
+        moving.x += 1;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.move(RIGHT, dt);
+        moving.x -= 1;
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        camera.move(FORWARD, dt);
+        moving.y -= 1;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        camera.move(BACKWARD, dt);
+        moving.y += 1;
+    camera.move(moving, dt);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -161,7 +162,7 @@ void updateViewMatrix(Shader shader)
     float k1, k2, k3;
     rx = camera.right.x; ry = camera.right.y; rz = camera.right.z;
     ux = camera.up.x; uy = camera.up.y; uz = camera.up.z;
-    dx = camera.direction.x; dy = camera.direction.y; dz = camera.direction.z;
+    dx = camera.facing.x; dy = camera.facing.y; dz = camera.facing.z;
     px = -camera.position.x; py = -camera.position.y; pz = -camera.position.z;
     k1 = px * rx + py * ry + pz * rz;
     k2 = px * ux + py * uy + pz * uz;

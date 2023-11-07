@@ -22,42 +22,28 @@ void Camera::turn(float x_offset, float y_offset)
     if(pitch < -1.56)
         pitch = -1.56;
 
-    direction.x = cos(yaw) * cos(pitch);
-    direction.y = sin(pitch);
-    direction.z = sin(yaw) * cos(pitch);
-    direction = normalize(direction);
+    facing.x = cos(yaw) * cos(pitch);
+    facing.y = sin(pitch);
+    facing.z = sin(yaw) * cos(pitch);
+    facing = normalize(facing);
 
     update();
 }
 
-void Camera::move(Dir dir, float dt)
+void Camera::move(vec3f moving, float dt)
 {
-    switch (dir)
-    {
-        case LEFT:
-            position -= right * dt;
-            break;
-        case RIGHT:
-            position += right * dt;
-            break;
-        case UP:
-            position += up * dt;
-            break;
-        case DOWN:
-            position -= up * dt;
-            break;
-        case FORWARD:
-            position += direction * dt;
-            break;
-        case BACKWARD:
-            position -= direction * dt;
-            break;
-    } 
+    normalize(moving);
+    vec3f direction;
+    direction += right * moving.x;
+    direction += up * moving.y;
+    direction += facing * moving.z;
+    direction = normalize(direction);
+    position += direction * dt;
 }
 
 void Camera::update()
 {
     vec3f y_axis = vec3f(0.0f, 1.0f, 0.0f);
-    right = normalize(y_axis * direction);
-    up = direction * right;
+    right = normalize(y_axis * facing);
+    up = facing * right;
 }
