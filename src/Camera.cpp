@@ -8,7 +8,7 @@ Camera::Camera()
     pitch = 0.0;
     fov = 0.785398;
     sensitivity = 0.001;
-    speed = 1;
+    speed = 2;
     turn(0, 0);
 }
 
