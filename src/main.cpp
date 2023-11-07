@@ -123,12 +123,12 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    float xoffset = xpos - mouse_x;
-    float yoffset = ypos - mouse_y;
+    float xoffset = mouse_x - xpos;
+    float yoffset = mouse_y - ypos;
     mouse_x = xpos;
     mouse_y = ypos;
 
-    float sensitivity = 0.1f;
+    float sensitivity = 0.001f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
@@ -146,6 +146,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     direction.z = sin(yaw) * cos(pitch);
     direction = normalize(direction);
     camera.direction = direction;
+    camera.update();
 }
 
 void updateProjectionMatrix(Shader shader)
@@ -174,11 +175,23 @@ void updateProjectionMatrix(Shader shader)
 void updateViewMatrix(Shader shader)
 {
     shader.use();
-    const float view[] = {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        camera.position.x, camera.position.y, camera.position.z, 1
+    float rx, ry, rz; 
+    float ux, uy, uz; 
+    float dx, dy, dz; 
+    float px, py, pz; 
+    float k1, k2, k3;
+    rx = camera.right.x; ry = camera.right.y; rz = camera.right.z;
+    ux = camera.up.x; uy = camera.up.y; uz = camera.up.z;
+    dx = camera.direction.x; dy = camera.direction.y; dz = camera.direction.z;
+    px = -camera.position.x; py = -camera.position.y; pz = -camera.position.z;
+    k1 = px * rx + py * ry + pz * rz;
+    k2 = px * ux + py * uy + pz * uz;
+    k3 = px * dx + py * dy + pz * dz;
+    float view[] = {
+        rx, ux, dx, 0,
+        ry, uy, dy, 0,
+        rz, uz, dz, 0,
+        k1, k2, k3, 1
     };
     unsigned int viewID = glGetUniformLocation(shader.ID, "view");
     glUniformMatrix4fv(viewID, 1, GL_FALSE, view);

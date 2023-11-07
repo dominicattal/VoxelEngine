@@ -12,6 +12,7 @@ public:
     vec3f right;
     vec3f up;
     Camera();
+    void update();
 };
 
 #endif /* CAMERA_H */
