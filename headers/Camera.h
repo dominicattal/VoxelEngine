@@ -6,12 +6,13 @@
 class Camera
 {
 public:
-    float fov;
+    float fov, yaw, pitch;
     vec3f position;
     vec3f direction;
     vec3f right;
     vec3f up;
     Camera();
+    void turn(float x_offset, float y_offset);
     void update();
 };
 

@@ -26,9 +26,6 @@ Camera camera;
 int mouse_x = window_width / 2;
 int mouse_y = window_height / 2;
 
-float yaw = -1.57079632679;
-float pitch = 0.0f;
-
 int main() 
 {
     // initialize glfw
@@ -89,20 +86,21 @@ int main()
 void processInput(GLFWwindow* window)
 {
     // Handles keyboard inputs
+    float move_speed = 0.5;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.position.y -= 0.1 * dt;
+        camera.position.y -= move_speed * dt;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.position.y += 0.1 * dt;
+        camera.position.y += move_speed * dt;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.position.x += 0.1 * dt;
+        camera.position.x += move_speed * dt;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.position.x -= 0.1 * dt;
+        camera.position.x -= move_speed * dt;
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        camera.position.z -= 0.1 * dt;
+        camera.position.z -= move_speed * dt;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        camera.position.z += 0.1 * dt;
+        camera.position.z += move_speed * dt;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -132,21 +130,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
-    yaw += xoffset;
-    pitch += yoffset;
-
-    if(pitch > 1.56)
-        pitch = 1.56;
-    if(pitch < -1.56)
-        pitch = -1.56;
-
-    vec3f direction;
-    direction.x = cos(yaw) * cos(pitch);
-    direction.y = sin(pitch);
-    direction.z = sin(yaw) * cos(pitch);
-    direction = normalize(direction);
-    camera.direction = direction;
-    camera.update();
+    camera.turn(xoffset, yoffset);
 }
 
 void updateProjectionMatrix(Shader shader)
