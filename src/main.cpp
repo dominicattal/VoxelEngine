@@ -90,13 +90,13 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        moving.z -= 1;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         moving.z += 1;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        moving.z -= 1;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        moving.x += 1;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         moving.x -= 1;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        moving.x += 1;
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         moving.y -= 1;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
