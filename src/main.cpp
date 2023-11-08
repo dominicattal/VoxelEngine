@@ -2,9 +2,7 @@
 #include <glfw.h>
 #include <iostream>
 #include <cmath>
-#include <vec/vec2.h>
-#include <vec/vec3.h>
-#include <vec/vec4.h>
+#include <vec3.h>
 #include "error.h"
 #include "Shader.h"
 #include "Camera.h"

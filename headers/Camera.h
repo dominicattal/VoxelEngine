@@ -1,8 +1,7 @@
 #pragma once
 #ifndef CAMERA_H
 #define CAMERA_H
-#include <vec/vec3.h> 
-#include <vec/vec2.h>
+#include <vec3.h> 
 
 class Camera
 {
