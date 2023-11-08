@@ -3,7 +3,7 @@
 #include <cmath>
 #define PI 3.141592659
 
-Rect::Rect(const char* image_path, Shader* _shader, float aspect_ratio)
+Rect::Rect(const char* image_path, Shader* _shader)
 {
     shader = _shader;
     unsigned int texture;
@@ -65,6 +65,11 @@ Rect::Rect(const char* image_path, Shader* _shader, float aspect_ratio)
         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
+
+    unsigned int indices[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
@@ -72,7 +77,7 @@ Rect::Rect(const char* image_path, Shader* _shader, float aspect_ratio)
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     glBindTexture(GL_TEXTURE_2D, texture);  
     const float model[] = {

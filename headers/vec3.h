@@ -56,7 +56,7 @@ public:
     }
 };
 
-inline vec3f normalize(vec3f& other)
+inline vec3f normalize(vec3f vec)
 {
     float mag = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
     if (mag != 0)
