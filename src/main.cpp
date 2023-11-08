@@ -131,7 +131,7 @@ void updateProjectionMatrix(Shader shader)
 {
     // update shader projection matrix
     shader.use();
-    float aspect_ratio = window_width / window_height;
+    float aspect_ratio = (float)window_width / window_height;
     float fov = camera.fov;
     float near_clip_dis = 0.1f; 
     float far_clip_dis = 100.0f; 
