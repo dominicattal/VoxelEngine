@@ -40,9 +40,19 @@ public:
         float _z = x * other.y - y * other.x;
         return vec3f(_x, _y, _z);
     }
+    void operator*(const vec3f& other)
+    {
+        x = y * other.z - z * other.y;
+        y = z * other.x - x * other.z;
+        z = x * other.y - y * other.x;
+    }
     vec3f operator*(const float& num)
     {
         return vec3f(x * num, y * num, z * num);
+    }
+    void operator*(const float& num)
+    {
+        x *= num; y *= num; z *= num;
     }
 };
 
