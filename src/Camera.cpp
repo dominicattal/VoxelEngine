@@ -3,13 +3,13 @@
 
 Camera::Camera()
 {
-    position = vec3f(0.0f, 0.0f, 3.0f);
-    yaw = 0.0;
+    position = vec3f(0.0f, 0.0f, 5.0f);
+    yaw = -1.567;
     pitch = 0.0;
+    turn(0, 0);
     fov = 0.785398;
     sensitivity = 0.001;
-    speed = 2;
-    turn(0, 0);
+    speed = 2.5;
 }
 
 void Camera::turn(float x_offset, float y_offset)
@@ -38,7 +38,7 @@ void Camera::move(vec3f moving, float dt)
     direction += up * moving.y;
     direction += facing * moving.z;
     direction = normalize(direction);
-    position += direction * dt;
+    position += direction * speed * dt;
 }
 
 void Camera::update()
