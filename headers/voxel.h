@@ -1,21 +1,22 @@
 #pragma once
-#ifndef RECT_H
-#define RECT_H
+#ifndef VOXEL_H
+#define VOXEL_H
 
 #include <glad.h>
 #include <stb_image.h>
-#include <vec3.h>
+#include <unordered_map>
+#include "vec3.h"
 #include "shader.h"
 
 class Voxel
 {
-    unsigned int VAO, EBO;
-    unsigned int[] VBO;
+    unsigned int VAOs[6], VBOs[6], EBO;
     Shader* shader;
     vec3f position;
+    std::unordered_map<vec3f, Voxel*>* voxels;
 public:
-    Voxel(const char* image_path, Shader* shader, vec3f _position);
+    Voxel(const char* image_path, Shader* shader_, vec3f position_, std::unordered_map<vec3f, Voxel*>* voxels_);
     void draw();
 };
 
-#endif /* RECT_H */
+#endif /* VOXEL_H */

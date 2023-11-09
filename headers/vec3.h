@@ -56,6 +56,11 @@ public:
     }
 };
 
+inline bool operator==(const vec3f& vec1, const vec3f& vec2)
+{
+    return vec1.x == vec2.x && vec1.y == vec2.y && vec1.z == vec2.z;
+}
+
 inline vec3f normalize(vec3f vec)
 {
     float mag = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
@@ -70,5 +75,20 @@ inline std::ostream& operator<<(std::ostream& out, vec3f& vec)
     out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ") [" << mag << "]";
     return out;
 }
+
+template <>
+struct std::hash<vec3f>
+{
+  std::size_t operator()(const vec3f& k) const
+  {
+    using std::size_t;
+    using std::hash;
+    using std::string;
+
+    return ((hash<float>()(k.x)
+             ^ (hash<float>()(k.y) << 1)) >> 1)
+             ^ (hash<float>()(k.z) << 1);
+  }
+};
 
 #endif /* VEC3_H */

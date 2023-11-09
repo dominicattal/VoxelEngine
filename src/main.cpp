@@ -62,25 +62,24 @@ int main()
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     updateProjectionMatrix(shader);
 
-    std::vector<Voxel*> squares;
+    std::unordered_map<vec3f, Voxel*> voxels;
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
             for (int k = 0; k < 3; k++)
             {
-                Voxel* square = new Voxel("assets/test.jpg", &shader, vec3f(i, j, k));
-                squares.push_back(square);
+                vec3f pos(i, j, k);
+                voxels[pos] = new Voxel("assets/test.jpg", &shader, pos, &voxels);
             }
         }
     }
-    squares.push_back(new Voxel("assets/test.jpg", &shader, vec3f(-5, 0, 0)));
-    std::cout << squares.size();
+    voxels[vec3f(-5, 0, 0)] = new Voxel("assets/test.jpg", &shader, vec3f(-5, 0, 0), &voxels);
 
     frame_time = glfwGetTime();
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glEnable(GL_DEPTH_TEST);
 
     while (!glfwWindowShouldClose(window))
@@ -89,8 +88,8 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         updateViewMatrix(shader);
-        for (Voxel* square : squares)
-            square->draw();
+        for (auto pair : voxels)
+            pair.second->draw();
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
