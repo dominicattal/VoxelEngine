@@ -1,4 +1,4 @@
-#include "Camera.h"
+#include "camera.h"
 #include <iostream>
 
 Camera::Camera()
@@ -8,7 +8,7 @@ Camera::Camera()
     pitch = 0.0;
     fov = 0.785398;
     sensitivity = 0.001;
-    speed = 2;
+    speed = 5;
     turn(0, 0);
 }
 
@@ -38,7 +38,7 @@ void Camera::move(vec3f moving, float dt)
     direction += up * moving.y;
     direction += facing * moving.z;
     direction = normalize(direction);
-    position += direction * dt;
+    position += direction * speed * dt;
 }
 
 void Camera::update()

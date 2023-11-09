@@ -2,22 +2,24 @@
 #include <glfw.h>
 #include <iostream>
 #include <cmath>
-#include <vec3.h>
+#include <vector>
+
+#include "vec3.h"
 #include "error.h"
-#include "Shader.h"
-#include "Camera.h"
-#include "Rect.h"
+#include "shader.h"
+#include "camera.h"
+#include "voxel.h"
 
 void processInput(GLFWwindow* window);
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_button_callback(GLFWwindow* window, int button, int actions, int mods);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+void mouseButtonCallback(GLFWwindow* window, int button, int actions, int mods);
+void mouseCallback(GLFWwindow* window, double xpos, double ypos);
 void updateProjectionMatrix(Shader shader);
 void updateViewMatrix(Shader shader);
 void updateDeltaTime();
 
 int window_width  = 800;
-int window_height = 800;
+int window_height = 600;
 float dt = 0, frame_time;
 Camera camera;
 
@@ -48,21 +50,36 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glEnable(GL_CULL_FACE); 
+    glCullFace(GL_FRONT); 
 
     glViewport(0, 0, window_width, window_height);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
-    glfwSetMouseButtonCallback(window, mouse_button_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);  
+    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);  
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    glfwSetCursorPosCallback(window, mouseCallback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     updateProjectionMatrix(shader);
 
-    Rect square("assets/test.jpg", &shader);
+    std::vector<Voxel*> squares;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                Voxel* square = new Voxel("assets/test.jpg", &shader, vec3f(i, j, k));
+                squares.push_back(square);
+            }
+        }
+    }
+    squares.push_back(new Voxel("assets/test.jpg", &shader, vec3f(-5, 0, 0)));
+    std::cout << squares.size();
 
     frame_time = glfwGetTime();
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glEnable(GL_DEPTH_TEST);
 
     while (!glfwWindowShouldClose(window))
@@ -71,7 +88,8 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         updateViewMatrix(shader);
-        square.draw();
+        for (Voxel* square : squares)
+            square->draw();
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -102,7 +120,7 @@ void processInput(GLFWwindow* window)
     camera.move(moving, dt);
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     // Change viewport when window resized
     glViewport(0, 0, width, height);
@@ -110,7 +128,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     window_height = height;
 }
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
         std::cout << 1 / dt << std::endl;
@@ -118,7 +136,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         std::cout << 1 / dt << std::endl;
 }
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
     float x_offset = mouse_x - xpos;
     float y_offset = mouse_y - ypos;
@@ -129,7 +147,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 void updateProjectionMatrix(Shader shader)
 {
-    // update shader projection matrix
     shader.use();
     float aspect_ratio = (float)window_width / window_height;
     float fov = camera.fov;

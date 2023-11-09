@@ -5,14 +5,15 @@
 #include <glad.h>
 #include <stb_image.h>
 #include <vec3.h>
-#include "Shader.h"
+#include "shader.h"
 
-class Rect
+class Voxel
 {
     unsigned int VAO, VBO, EBO;
     Shader* shader;
+    vec3f position;
 public:
-    Rect(const char* image_path, Shader* shader);
+    Voxel(const char* image_path, Shader* shader, vec3f _position);
     void draw();
 };
 

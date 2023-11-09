@@ -1,11 +1,12 @@
-#include "Rect.h"
+#include "voxel.h"
 #include <iostream>
 #include <cmath>
 #define PI 3.141592659
 
-Rect::Rect(const char* image_path, Shader* _shader)
+Voxel::Voxel(const char* image_path, Shader* _shader, vec3f _position)
 {
     shader = _shader;
+    position = _position;
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -23,12 +24,12 @@ Rect::Rect(const char* image_path, Shader* _shader)
     stbi_image_free(data);
 
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,         
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
 
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
          0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
@@ -44,12 +45,12 @@ Rect::Rect(const char* image_path, Shader* _shader)
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
          0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
 
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
@@ -59,11 +60,11 @@ Rect::Rect(const char* image_path, Shader* _shader)
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f
     };
 
     unsigned int indices[] = {
@@ -91,8 +92,18 @@ Rect::Rect(const char* image_path, Shader* _shader)
     glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
 }
 
-void Rect::draw()
+void Voxel::draw()
 {
+    float x = position.x, y = position.y, z = position.z;
+    const float model[] = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        x, y, z, 1
+    };
+    shader->use();
+    unsigned int modelID = glGetUniformLocation(shader->ID, "model");
+    glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }
