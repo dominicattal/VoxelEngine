@@ -81,13 +81,9 @@ struct std::hash<vec3f>
 {
   std::size_t operator()(const vec3f& k) const
   {
-    using std::size_t;
-    using std::hash;
-    using std::string;
-
-    return ((hash<float>()(k.x)
-             ^ (hash<float>()(k.y) << 1)) >> 1)
-             ^ (hash<float>()(k.z) << 1);
+    return ((std::hash<float>()(k.x)
+             ^ (std::hash<float>()(k.y) << 1)) >> 1)
+             ^ (std::hash<float>()(k.z) << 1);
   }
 };
 
