@@ -9,7 +9,8 @@
 
 class Voxel
 {
-    unsigned int VAO, VBO, EBO;
+    unsigned int VAO, EBO;
+    unsigned int[] VBO;
     Shader* shader;
     vec3f position;
 public:

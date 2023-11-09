@@ -23,6 +23,7 @@ Voxel::Voxel(const char* image_path, Shader* _shader, vec3f _position)
     }
     stbi_image_free(data);
 
+    /*
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,         
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -80,16 +81,9 @@ Voxel::Voxel(const char* image_path, Shader* _shader, vec3f _position)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    glBindTexture(GL_TEXTURE_2D, texture);  
-    const float model[] = {
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-    };
-    shader->use();
-    unsigned int modelID = glGetUniformLocation(shader->ID, "model");
-    glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
+    glBindTexture(GL_TEXTURE_2D, texture); 
+    */
+    float front;
 }
 
 void Voxel::draw()
