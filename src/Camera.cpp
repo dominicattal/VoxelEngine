@@ -47,3 +47,4 @@ void Camera::update()
     right = normalize(y_axis * facing);
     up = facing * right;
 }
+

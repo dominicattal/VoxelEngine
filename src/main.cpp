@@ -63,13 +63,13 @@ int main()
     updateProjectionMatrix(shader);
 
     std::unordered_map<vec3f, Voxel*> voxels;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            for (int k = 0; k < 3; k++)
+            for (int k = 0; k < 20; k++)
             {
-                vec3f pos(i, j, k);
+                vec3f pos(i - 10, - 1 - j, k - 10);
                 voxels[pos] = new Voxel("assets/test.jpg", &shader, pos, &voxels);
             }
         }
@@ -78,8 +78,6 @@ int main()
 
     frame_time = glfwGetTime();
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glEnable(GL_DEPTH_TEST);
 
     while (!glfwWindowShouldClose(window))
@@ -131,9 +129,9 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-        std::cout << 1 / dt << std::endl;
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-        std::cout << 1 / dt << std::endl;
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos)
