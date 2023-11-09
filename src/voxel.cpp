@@ -102,9 +102,20 @@ void Voxel::draw()
     shader->use();
     unsigned int modelID = glGetUniformLocation(shader->ID, "model");
     glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
+    vec3f dirs[] = {
+        vec3f(0, 0,  1),
+        vec3f(0, 0, -1),
+        vec3f(-1, 0, 0),
+        vec3f( 1, 0, 0),
+        vec3f(0,  1, 0),
+        vec3f(0, -1, 0)
+    };
     for (int i = 0; i < 6; i++)
     {
-        glBindVertexArray(VAOs[i]);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        if (voxels->count(position + dirs[i]) == 0)
+        {
+            glBindVertexArray(VAOs[i]);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
     }
 }
