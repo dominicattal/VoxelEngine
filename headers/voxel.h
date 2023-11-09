@@ -11,6 +11,7 @@
 class Voxel
 {
     unsigned int VAOs[6], VBOs[6], EBO;
+    unsigned int modelID;
     Shader* shader;
     vec3f position;
     std::unordered_map<vec3f, Voxel*>* voxels;

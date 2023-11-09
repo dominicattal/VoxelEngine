@@ -9,9 +9,7 @@ public:
     float fov, yaw, pitch;
     float speed, sensitivity;
     vec3f position;
-    vec3f facing;
-    vec3f right;
-    vec3f up;
+    vec3f facing, right, up;
     Camera();
     void turn(float x_offset, float y_offset);
     void move(vec3f direction, float dt);

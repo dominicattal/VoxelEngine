@@ -8,6 +8,7 @@ Voxel::Voxel(const char* image_path, Shader* shader_, vec3f position_, std::unor
     shader = shader_;
     position = position_;
     voxels = voxels_;
+    modelID = glGetUniformLocation(shader->ID, "model");
 
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -100,7 +101,6 @@ void Voxel::draw()
         x, y, z, 1
     };
     shader->use();
-    unsigned int modelID = glGetUniformLocation(shader->ID, "model");
     glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
     vec3f dirs[] = {
         vec3f(0, 0,  1),
