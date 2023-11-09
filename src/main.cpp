@@ -63,13 +63,13 @@ int main()
     updateProjectionMatrix(shader);
 
     std::unordered_map<vec3f, Voxel*> voxels;
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 10; i++)
     {
-        for (int j = 0; j < 3; j++)
+        for (int j = 0; j < 1; j++)
         {
-            for (int k = 0; k < 20; k++)
+            for (int k = 0; k < 10; k++)
             {
-                vec3f pos(i - 10, - 1 - j, k - 10);
+                vec3f pos(i - 5, - 1 - j, k - 5);
                 voxels[pos] = new Voxel("assets/test.jpg", &shader, pos, &voxels);
             }
         }

@@ -34,9 +34,13 @@ void Camera::move(vec3f moving, float dt)
 {
     normalize(moving);
     vec3f direction;
-    direction += right  * moving.x;
-    direction += up     * moving.y;
-    direction += facing * moving.z;
+    //direction += right  * moving.x;
+    //direction += up     * moving.y;
+    //direction += facing * moving.z;
+    direction.x += facing.x * moving.z;
+    direction.z += facing.z * moving.z;
+    direction.x += right.x  * moving.x;
+    direction.z += right.z  * moving.x;
     direction = normalize(direction);
     position += direction * speed * dt;
 }
