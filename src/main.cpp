@@ -65,21 +65,17 @@ int main()
     updateProjectionMatrix(shader);
 
     std::unordered_map<vec3f, Voxel*> voxels;
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 16; i++)
     {
         for (int j = 0; j < 1; j++)
         {
-            for (int k = 0; k < 10; k++)
+            for (int k = 0; k < 16; k++)
             {
-                vec3f pos(i - 5, - 1 - j, k - 5);
+                vec3f pos(i, - 1 - j, k);
                 voxels[pos] = new Voxel("assets/test.jpg", &shader, pos, &voxels);
             }
         }
     }
-    voxels[vec3f(-10, 0, -10)] = new Voxel("assets/test.jpg", &shader, vec3f(-10, 0, -10), &voxels);
-    voxels[vec3f(10, 0, 10)] = new Voxel("assets/test.jpg", &shader, vec3f(10, 0, 10), &voxels);
-    voxels[vec3f(0, 0, 0)] = new Voxel("assets/test.jpg", &shader, vec3f(0, 0, 0), &voxels);
-    voxels[vec3f(-1, 0, -1)] = new Voxel("assets/test.jpg", &shader, vec3f(-1, 0, -1), &voxels);
 
     frame_time = glfwGetTime();
 
@@ -185,7 +181,7 @@ void updateViewMatrix(Shader shader)
     rx = camera.right.x; ry = camera.right.y; rz = camera.right.z;
     ux = camera.up.x; uy = camera.up.y; uz = camera.up.z;
     dx = camera.facing.x; dy = camera.facing.y; dz = camera.facing.z;
-    px = -camera.position.x; py = -(camera.position.y + 1); pz = -camera.position.z;
+    px = -camera.position.x; py = -(camera.position.y + 0.5); pz = -camera.position.z;
     k1 = px * rx + py * ry + pz * rz;
     k2 = px * ux + py * uy + pz * uz;
     k3 = px * dx + py * dy + pz * dz;

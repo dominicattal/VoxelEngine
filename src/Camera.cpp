@@ -3,7 +3,7 @@
 
 Camera::Camera()
 {
-    position = vec3f(0.0f, 0.0f, 3.0f);
+    position = vec3f(8.5f, 0.0f, 3.0f);
     yaw = 0.0;
     pitch = 0.0;
     fov = 0.785398;
@@ -34,13 +34,13 @@ void Camera::move(vec3f moving, float dt)
 {
     normalize(moving);
     vec3f direction;
-    //direction += right  * moving.x;
-    //direction += up     * moving.y;
-    //direction += facing * moving.z;
-    direction.x += facing.x * moving.z;
-    direction.z += facing.z * moving.z;
-    direction.x += right.x  * moving.x;
-    direction.z += right.z  * moving.x;
+    direction += right  * moving.x;
+    direction += up     * moving.y;
+    direction += facing * moving.z;
+    //direction.x += facing.x * moving.z;
+    //direction.z += facing.z * moving.z;
+    //direction.x += right.x  * moving.x;
+    //direction.z += right.z  * moving.x;
     direction = normalize(direction);
     position += direction * speed * dt;
 }
