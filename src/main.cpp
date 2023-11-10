@@ -88,7 +88,7 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         updateViewMatrix(shader);
         for (auto pair : voxels)
@@ -185,7 +185,7 @@ void updateViewMatrix(Shader shader)
     rx = camera.right.x; ry = camera.right.y; rz = camera.right.z;
     ux = camera.up.x; uy = camera.up.y; uz = camera.up.z;
     dx = camera.facing.x; dy = camera.facing.y; dz = camera.facing.z;
-    px = -camera.position.x; py = -camera.position.y; pz = -camera.position.z;
+    px = -camera.position.x; py = -(camera.position.y + 1); pz = -camera.position.z;
     k1 = px * rx + py * ry + pz * rz;
     k2 = px * ux + py * uy + pz * uz;
     k3 = px * dx + py * dy + pz * dz;
