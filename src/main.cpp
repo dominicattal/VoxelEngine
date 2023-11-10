@@ -51,6 +51,8 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // save render calls
     glEnable(GL_CULL_FACE); 
     glCullFace(GL_FRONT); 
 
@@ -74,7 +76,10 @@ int main()
             }
         }
     }
-    voxels[vec3f(-5, 0, 0)] = new Voxel("assets/test.jpg", &shader, vec3f(-5, 0, 0), &voxels);
+    voxels[vec3f(-10, 0, -10)] = new Voxel("assets/test.jpg", &shader, vec3f(-10, 0, -10), &voxels);
+    voxels[vec3f(10, 0, 10)] = new Voxel("assets/test.jpg", &shader, vec3f(10, 0, 10), &voxels);
+    voxels[vec3f(0, 0, 0)] = new Voxel("assets/test.jpg", &shader, vec3f(0, 0, 0), &voxels);
+    voxels[vec3f(-1, 0, -1)] = new Voxel("assets/test.jpg", &shader, vec3f(-1, 0, -1), &voxels);
 
     frame_time = glfwGetTime();
 
@@ -96,6 +101,10 @@ int main()
     glfwTerminate();
     return 1;
 }
+
+// -------------------------------
+// function definitions
+// -------------------------------
 
 void processInput(GLFWwindow* window)
 {

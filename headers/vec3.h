@@ -61,6 +61,11 @@ inline bool operator==(const vec3f& vec1, const vec3f& vec2)
     return vec1.x == vec2.x && vec1.y == vec2.y && vec1.z == vec2.z;
 }
 
+inline vec3f floor(const vec3f& vec)
+{
+    return vec3f(floor(vec.x), floor(vec.y), floor(vec.z));
+}
+
 inline vec3f normalize(vec3f vec)
 {
     float mag = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
@@ -69,10 +74,10 @@ inline vec3f normalize(vec3f vec)
     return vec3f();
 }
 
-inline std::ostream& operator<<(std::ostream& out, vec3f& vec)
+inline std::ostream& operator<<(std::ostream& out, const vec3f& vec)
 {
     float mag = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
-    out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ") [" << mag << "]";
+    out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
     return out;
 }
 
