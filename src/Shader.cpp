@@ -22,7 +22,7 @@ Shader::Shader(const char* vertex_path, const char* fragment_path)
         vertex_code = vertex_stream.str();
         fragment_code = fragment_stream.str();
     }
-    catch (std::ifstream::failure e) 
+    catch (std::ifstream::failure error) 
     { 
         throwError(4); 
     }

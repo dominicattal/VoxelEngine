@@ -5,6 +5,8 @@
 #include <ostream>
 #include <cmath>
 
+#define chunk_size 16
+
 class vec3f 
 {
 public:
@@ -66,6 +68,22 @@ inline vec3f floor(const vec3f& vec)
     return vec3f(floor(vec.x), floor(vec.y), floor(vec.z));
 }
 
+inline std::pair<int, int> chunkify(const vec3f& vec)
+{
+    int vec_x = floor(vec.x);
+    int vec_z = floor(vec.z);
+    std::pair<int, int> chunk;
+    if (vec_x >= 0)
+        chunk.first = vec_x / chunk_size;
+    else
+        chunk.first = vec_x / chunk_size - 1;
+    if (vec_z >= 0)
+        chunk.second = vec_z / chunk_size;
+    else
+        chunk.second = vec_z / chunk_size - 1;
+    return chunk;
+}
+
 inline vec3f normalize(vec3f vec)
 {
     float mag = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
@@ -76,7 +94,6 @@ inline vec3f normalize(vec3f vec)
 
 inline std::ostream& operator<<(std::ostream& out, const vec3f& vec)
 {
-    float mag = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
     out << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
     return out;
 }
@@ -89,6 +106,15 @@ struct std::hash<vec3f>
     return ((std::hash<float>()(k.x)
              ^ (std::hash<float>()(k.y) << 1)) >> 1)
              ^ (std::hash<float>()(k.z) << 1);
+  }
+};
+
+template <>
+struct std::hash<std::pair<int, int>>
+{
+  std::size_t operator()(const std::pair<int, int>& p) const
+  {
+    return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
   }
 };
 

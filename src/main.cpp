@@ -11,6 +11,9 @@
 #include "camera.h"
 #include "voxel.h"
 
+typedef std::pair<int, int> vec2i;
+typedef std::unordered_map<vec3f, Voxel*> chunk;
+
 void processInput(GLFWwindow* window);
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void mouseButtonCallback(GLFWwindow* window, int button, int actions, int mods);
@@ -19,10 +22,16 @@ void updateProjectionMatrix(Shader shader);
 void updateViewMatrix(Shader shader);
 void updateDeltaTime();
 
+void createChunk(vec2i loc, Shader shader);
+void drawChunk(vec2i loc);
+void drawChunks();
+
 int window_width  = 800;
 int window_height = 600;
 float dt = 0, frame_time;
 Camera camera;
+std::unordered_map<vec2i, chunk*>* chunks;
+
 
 float mouse_x = window_width / 2;
 float mouse_y = window_height / 2;
@@ -64,31 +73,27 @@ int main()
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     updateProjectionMatrix(shader);
 
-    std::unordered_map<vec3f, Voxel*> voxels;
-    for (int i = 0; i < 16; i++)
-    {
-        for (int j = 0; j < 1; j++)
-        {
-            for (int k = 0; k < 16; k++)
-            {
-                vec3f pos(i, - 1 - j, k);
-                voxels[pos] = new Voxel("assets/test.jpg", &shader, pos, &voxels);
-            }
-        }
-    }
+    chunks = new std::unordered_map<vec2i, chunk*>();
+    createChunk(vec2i(0, 0), shader);
 
     frame_time = glfwGetTime();
 
     glEnable(GL_DEPTH_TEST);
+    int c = 0;
 
     while (!glfwWindowShouldClose(window))
     {
+        c++;
+        if (c % 1000 == 0)
+        {
+            std::pair<int, int> k = chunkify(camera.position);
+            std::cout << k.first << " " << k.second << std::endl;
+            std::cout << 1 / dt << std::endl;
+        }
         processInput(window);
         glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         updateViewMatrix(shader);
-        for (auto pair : voxels)
-            pair.second->draw();
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -200,4 +205,32 @@ void updateDeltaTime()
     float current_time = glfwGetTime();
     dt = current_time - frame_time;
     frame_time = current_time;
+}
+
+void createChunk(vec2i loc, Shader shader)
+{
+    chunk* voxels;
+    for (int i = 0; i < chunk_size; i++)
+    {
+        for (int j = 0; j < 1; j++)
+        {
+            for (int k = 0; k < chunk_size; k++)
+            {
+                vec3f pos(i, - 1 - j, k);
+                Voxel* voxel = new Voxel("assets/test.jpg", &shader, pos, voxels);
+                voxels->insert({pos, voxel});
+            }
+        }
+    }
+    chunks->insert({vec2i(0, 0), voxels});
+}
+
+void drawChunk(vec2i loc)
+{
+
+}
+
+void drawChunks()
+{
+    
 }
