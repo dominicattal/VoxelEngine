@@ -211,7 +211,7 @@ void updateDeltaTime()
 
 void createChunk(vec2i loc, Shader shader)
 {
-    chunk* voxels;
+    chunk* voxels = new chunk();
     for (int i = 0; i < chunk_size; i++)
     {
         for (int j = 0; j < 1; j++)
@@ -229,10 +229,15 @@ void createChunk(vec2i loc, Shader shader)
 
 void drawChunk(vec2i loc)
 {
+    if (chunks->count(loc) == 0)
+    {
+        return;
+    }
+    
     chunk* voxels = chunks->at(loc);
     for (auto pair : *voxels)
     {
-        std::cout << pair.second << std::endl; 
+        pair.second->draw();
     }
 }
 
