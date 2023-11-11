@@ -93,15 +93,19 @@ Voxel::Voxel(const char* image_path, Shader* shader_, vec3f position_, std::unor
 
 void Voxel::draw()
 {
+    return;
     float x = position.x, y = position.y, z = position.z;
+    return;
     const float model[] = {
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         x, y, z, 1
     };
+    return;
     shader->use();
     glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
+    return;
     vec3f dirs[] = {
         vec3f(0, 0,  1),
         vec3f(0, 0, -1),

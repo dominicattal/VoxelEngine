@@ -94,6 +94,8 @@ int main()
         glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         updateViewMatrix(shader);
+        drawChunks();
+        drawChunk(vec2i(0, 0));
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -222,12 +224,16 @@ void createChunk(vec2i loc, Shader shader)
             }
         }
     }
-    chunks->insert({vec2i(0, 0), voxels});
+    chunks->insert({loc, voxels});
 }
 
 void drawChunk(vec2i loc)
 {
-
+    chunk* voxels = chunks->at(loc);
+    for (auto pair : *voxels)
+    {
+        std::cout << pair.second << std::endl; 
+    }
 }
 
 void drawChunks()
