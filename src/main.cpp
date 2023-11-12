@@ -32,6 +32,7 @@ int render_distance = 1;
 float dt = 0, frame_time;
 Camera camera;
 std::unordered_map<vec2i, chunk*>* chunks;
+unsigned int texture;
 
 
 float mouse_x = window_width / 2;
@@ -73,6 +74,21 @@ int main()
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     updateProjectionMatrix(shader);
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("assets/test.jpg", &width, &height, &nrChannels, 0); 
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
 
     chunks = new std::unordered_map<vec2i, chunk*>();
     createChunk(vec2i(0, 0), shader);
@@ -213,7 +229,7 @@ void createChunk(vec2i loc, Shader shader)
             for (int k = 0; k < chunk_size; k++)
             {
                 vec3f pos(i + x * chunk_size, - 1 - j, k + y * chunk_size);
-                Voxel* voxel = new Voxel("assets/test.jpg", &shader, pos, voxels);
+                Voxel* voxel = new Voxel(&shader, pos, voxels, texture);
                 voxels->insert({pos, voxel});
             }
         }

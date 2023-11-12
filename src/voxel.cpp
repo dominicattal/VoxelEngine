@@ -1,30 +1,16 @@
 #include "voxel.h"
+#include <glfw.h>
 #include <iostream>
 #include <cmath>
 #define PI 3.141592659
 
-Voxel::Voxel(const char* image_path, Shader* shader_, vec3f position_, std::unordered_map<vec3f, Voxel*>* voxels_)
+Voxel::Voxel(Shader* shader_, vec3f position_, std::unordered_map<vec3f, Voxel*>* voxels_, unsigned int texture_)
 {
     shader = shader_;
     position = position_;
     voxels = voxels_;
     modelID = glGetUniformLocation(shader->ID, "model");
-
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    int width, height, nrChannels;
-    unsigned char *data = stbi_load(image_path, &width, &height, &nrChannels, 0); 
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
+    texture = texture_;
 
     float left[] = {
         0.0f, 0.0f, 1.0f, 0.0, 0.0,
@@ -87,7 +73,7 @@ Voxel::Voxel(const char* image_path, Shader* shader_, vec3f position_, std::unor
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
     }
-
+    
     glBindTexture(GL_TEXTURE_2D, texture);
 }
 
