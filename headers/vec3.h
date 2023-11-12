@@ -68,7 +68,7 @@ inline vec3f floor(const vec3f& vec)
     return vec3f(floor(vec.x), floor(vec.y), floor(vec.z));
 }
 
-inline std::pair<int, int> chunkify(const vec3f& vec)
+inline std::pair<int, int> toChunkCoords(const vec3f& vec)
 {
     int vec_x = floor(vec.x);
     int vec_z = floor(vec.z);
