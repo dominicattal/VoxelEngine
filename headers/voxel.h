@@ -10,7 +10,9 @@
 
 class Voxel
 {
+    static unsigned int VAOs1[6], VBOs1[6], EBO1;
     unsigned int VAOs[6], VBOs[6], EBO;
+    static int test;
     unsigned int modelID, texture;
     Shader* shader;
     vec3f position;
@@ -18,6 +20,7 @@ class Voxel
 public:
     Voxel(Shader* shader_, vec3f position_, std::unordered_map<vec3f, Voxel*>* voxels_, unsigned int texture_);
     void draw();
+    static void initalize();
 };
 
 #endif /* VOXEL_H */

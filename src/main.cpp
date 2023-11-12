@@ -90,6 +90,8 @@ int main()
     }
     stbi_image_free(data);
 
+    Voxel::initalize();
+
     chunks = new std::unordered_map<vec2i, chunk*>();
     createChunk(vec2i(0, 0), shader);
 
