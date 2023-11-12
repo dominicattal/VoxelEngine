@@ -28,7 +28,7 @@ void drawChunks(vec2i loc, Shader shader);
 
 int window_width  = 800;
 int window_height = 600;
-int render_distance = 1;
+int render_distance = 5;
 float dt = 0, frame_time;
 Camera camera;
 std::unordered_map<vec2i, chunk*>* chunks;
@@ -255,5 +255,12 @@ void drawChunk(vec2i loc, Shader shader)
 
 void drawChunks(vec2i loc, Shader shader)
 {
-    drawChunk(loc, shader);
+    int x = loc.first, y = loc.second;
+    for (int i = -render_distance; i < render_distance; i++)
+    {
+        for (int j = -render_distance / 2; j < render_distance / 2; j++)
+        {
+            drawChunk(vec2i(x + i, y + j), shader);
+        }
+    }
 }
