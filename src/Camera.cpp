@@ -47,7 +47,7 @@ void Camera::turn(float x_offset, float y_offset)
     updateViewMatrix();
 }
 
-void Camera::move(vec3f moving, float dt)
+void Camera::move(vec3f moving)
 {
     normalize(moving);
     vec3f direction;

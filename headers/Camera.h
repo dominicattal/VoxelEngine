@@ -15,7 +15,7 @@ struct Camera
     Camera();
     void linkShader(Shader shader);
     void turn(float x_offset, float y_offset);
-    void move(vec3f direction, float dt);
+    void move(vec3f direction);
     void updateViewMatrix();
     void updateProjectionMatrix();
 };

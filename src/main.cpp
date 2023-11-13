@@ -125,7 +125,7 @@ void processInput(GLFWwindow* window)
         moving.y -= 1;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         moving.y += 1;
-    camera.move(moving, dt);
+    camera.move(moving);
 }
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
