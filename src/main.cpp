@@ -113,6 +113,8 @@ void processInput(GLFWwindow* window)
         moving.y -= 1;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         moving.y += 1;
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+        std::cout << 1 / dt << std::endl;
     camera.move(moving);
 }
 
