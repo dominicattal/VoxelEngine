@@ -6,16 +6,18 @@
 
 struct Camera
 {
-    float fov, yaw, pitch;
+    float yaw, pitch;
     float speed, sensitivity;
+    float aspect_ratio, fov;
     vec3f position;
     vec3f facing, right, up;
-    unsigned int viewID;
+    unsigned int viewID, projID;
     Camera();
     void linkShader(Shader shader);
     void turn(float x_offset, float y_offset);
     void move(vec3f direction, float dt);
     void updateViewMatrix();
+    void updateProjectionMatrix();
 };
 
 #endif /* CAMERA_H */

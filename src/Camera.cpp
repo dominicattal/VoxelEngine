@@ -3,20 +3,25 @@
 
 Camera::Camera()
 {
-    position = vec3f(8.5f, 0.0f, 3.0f);
-    facing   = vec3f(1, 0, 0);
-    right    = vec3f(0, 0, -1);
-    up       = vec3f(0, 1, 0);
-    yaw = 0.0;
-    pitch = 0.0;
-    fov = 0.785398;
-    sensitivity = 0.001;
-    speed = 20;
+    position     = vec3f(8.5f, 0.0f, 3.0f);
+    facing       = vec3f(1, 0, 0);
+    right        = vec3f(0, 0, -1);
+    up           = vec3f(0, 1, 0);
+    yaw          = 0.0;
+    pitch        = 0.0;
+    fov          = 0.785398;
+    aspect_ratio = 4.0 / 3.0; 
+    sensitivity  = 0.001;
+    speed        = 20;
 }
 
 void Camera::linkShader(Shader shader)
 {
+    shader.use();
     viewID = glGetUniformLocation(shader.ID, "view");
+    projID = glGetUniformLocation(shader.ID, "perspective");
+    updateViewMatrix();
+    updateProjectionMatrix();
 }
 
 void Camera::turn(float x_offset, float y_offset)
@@ -78,4 +83,22 @@ void Camera::updateViewMatrix()
         k1, k2, k3, 1
     };
     glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
+}
+
+void Camera::updateProjectionMatrix()
+{
+    float near_clip_dis = 0.1f; 
+    float far_clip_dis = 100.0f; 
+    float v1, v2, v3, v4;
+    v1 = 1 / (aspect_ratio * tan(fov / 2));
+    v2 = 1 / (tan(fov / 2));
+    v3 = (-near_clip_dis - far_clip_dis) / (near_clip_dis - far_clip_dis);
+    v4 = (2 * far_clip_dis * near_clip_dis) / (near_clip_dis - far_clip_dis);
+    const float proj[] = {
+        v1, 0, 0, 0,
+        0, v2, 0, 0,
+        0, 0, v3, 1,
+        0, 0, v4, 0
+    };
+    glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
 }

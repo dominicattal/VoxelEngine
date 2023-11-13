@@ -18,8 +18,6 @@ void processInput(GLFWwindow* window);
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void mouseButtonCallback(GLFWwindow* window, int button, int actions, int mods);
 void mouseCallback(GLFWwindow* window, double xpos, double ypos);
-void updateProjectionMatrix(Shader shader);
-void updateViewMatrix(Shader shader);
 void updateDeltaTime();
 
 void createChunk(vec2i loc, Shader shader);
@@ -73,7 +71,6 @@ int main()
     glfwSetCursorPosCallback(window, mouseCallback);  
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
-    updateProjectionMatrix(shader);
     camera.linkShader(shader);
 
     glGenTextures(1, &texture);
@@ -165,53 +162,6 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos)
     mouse_x = xpos;
     mouse_y = ypos;
     camera.turn(x_offset, y_offset);
-}
-
-void updateProjectionMatrix(Shader shader)
-{
-    shader.use();
-    float aspect_ratio = (float)window_width / window_height;
-    float fov = camera.fov;
-    float near_clip_dis = 0.1f; 
-    float far_clip_dis = 100.0f; 
-    float v1, v2, v3, v4;
-    v1 = 1 / (aspect_ratio * tan(fov / 2));
-    v2 = 1 / (tan(fov / 2));
-    v3 = (-near_clip_dis - far_clip_dis) / (near_clip_dis - far_clip_dis);
-    v4 = (2 * far_clip_dis * near_clip_dis) / (near_clip_dis - far_clip_dis);
-    const float proj[] = {
-        v1, 0, 0, 0,
-        0, v2, 0, 0,
-        0, 0, v3, 1,
-        0, 0, v4, 0
-    };
-    unsigned int projID = glGetUniformLocation(shader.ID, "perspective");
-    glUniformMatrix4fv(projID, 1, GL_FALSE, proj);
-}
-
-void updateViewMatrix(Shader shader)
-{
-    shader.use();
-    float rx, ry, rz; 
-    float ux, uy, uz; 
-    float dx, dy, dz; 
-    float px, py, pz; 
-    float k1, k2, k3;
-    rx = camera.right.x; ry = camera.right.y; rz = camera.right.z;
-    ux = camera.up.x; uy = camera.up.y; uz = camera.up.z;
-    dx = camera.facing.x; dy = camera.facing.y; dz = camera.facing.z;
-    px = -camera.position.x; py = -(camera.position.y + 0.5); pz = -camera.position.z;
-    k1 = px * rx + py * ry + pz * rz;
-    k2 = px * ux + py * uy + pz * uz;
-    k3 = px * dx + py * dy + pz * dz;
-    float view[] = {
-        rx, ux, dx, 0,
-        ry, uy, dy, 0,
-        rz, uz, dz, 0,
-        k1, k2, k3, 1
-    };
-    unsigned int viewID = glGetUniformLocation(shader.ID, "view");
-    glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 }
 
 void updateDeltaTime()
