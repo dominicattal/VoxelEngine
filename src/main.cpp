@@ -13,26 +13,17 @@
 #include "voxel.h"
 #include "globals.h"
 
-typedef std::pair<int, int> vec2i;
-typedef std::unordered_map<vec3f, Voxel*> chunk;
-
 void processInput(GLFWwindow* window);
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void mouseButtonCallback(GLFWwindow* window, int button, int actions, int mods);
 void mouseCallback(GLFWwindow* window, double xpos, double ypos);
 void updateDeltaTime();
 
-void createChunk(vec2i loc, Shader shader);
-void drawChunk(vec2i loc, Shader shader);
-void drawChunks(vec2i loc, Shader shader);
-
 int window_width  = 800;
 int window_height = 600;
 int render_distance = 5;
 float dt = 0, frame_time;
 Camera camera;
-std::unordered_map<vec2i, chunk*>* chunks;
-
 
 float mouse_x = window_width / 2;
 float mouse_y = window_height / 2;
@@ -77,10 +68,8 @@ int main()
     Texture block_texture("assets/test.jpg");
     block_texture.use();
 
-    Voxel::initalize();
-
-    chunks = new std::unordered_map<vec2i, chunk*>();
-    createChunk(vec2i(0, 0), shader);
+    initalizeVoxels();
+    linkVoxelShader(shader);
 
     frame_time = glfwGetTime();
 
@@ -92,7 +81,7 @@ int main()
         processInput(window);
         glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        drawChunks(toChunkCoords(camera.position), shader);
+        drawVoxels();
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);
@@ -159,47 +148,3 @@ void updateDeltaTime()
     frame_time = current_time;
 }
 
-void createChunk(vec2i loc, Shader shader)
-{
-    chunk* voxels = new chunk();
-    int x = loc.first, y = loc.second;
-    for (int i = 0; i < chunk_size; i++)
-    {
-        for (int j = 0; j < 1; j++)
-        {
-            for (int k = 0; k < chunk_size; k++)
-            {
-                vec3f pos(i + x * chunk_size, - 1 - j, k + y * chunk_size);
-                Voxel* voxel = new Voxel(&shader, pos, voxels);
-                voxels->insert({pos, voxel});
-            }
-        }
-    }
-    chunks->insert({loc, voxels});
-}
-
-void drawChunk(vec2i loc, Shader shader)
-{
-    if (chunks->count(loc) == 0)
-    {
-        createChunk(loc, shader);
-    }
-
-    chunk* voxels = chunks->at(loc);
-    for (auto pair : *voxels)
-    {
-        pair.second->draw();
-    }
-}
-
-void drawChunks(vec2i loc, Shader shader)
-{
-    int x = loc.first, y = loc.second;
-    for (int i = -render_distance; i < render_distance; i++)
-    {
-        for (int j = -render_distance / 2; j < render_distance / 2; j++)
-        {
-            drawChunk(vec2i(x + i, y + j), shader);
-        }
-    }
-}

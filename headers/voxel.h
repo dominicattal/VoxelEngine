@@ -1,25 +1,24 @@
 #pragma once
-#ifndef VOXEL_H
-#define VOXEL_H
+#ifndef VOXEL1_H
+#define VOXEL1_H
 
-#include <glad.h>
+#include <map>
 #include <unordered_map>
-#include "vec3.h"
 #include "shader.h"
+#include "texture.h"
+#include "vec3.h"
 
-class Voxel
+struct Voxel
 {
-    static unsigned int VAOs1[6], VBOs1[6], EBO1;
-    unsigned int VAOs[6], VBOs[6], EBO;
-    static int test;
-    unsigned int modelID, texture;
-    Shader* shader;
-    vec3f position;
-    std::unordered_map<vec3f, Voxel*>* voxels;
-public:
-    Voxel(Shader* shader_, vec3f position_, std::unordered_map<vec3f, Voxel*>* voxels_);
-    void draw();
-    static void initalize();
+    Texture texture_top;
+    Texture texture_bottom;
+    Texture texture_right;
+    Texture texture_left;
+    Texture texture_front;
+    Texture texture_back;
 };
 
-#endif /* VOXEL_H */
+void initalizeVoxels();
+void drawVoxels();
+
+#endif /* VOXEL1_H */
