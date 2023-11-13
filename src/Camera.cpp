@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "globals.h"
 #include <iostream>
 
 Camera::Camera()
@@ -10,7 +11,7 @@ Camera::Camera()
     yaw          = 0.0;
     pitch        = 0.0;
     fov          = 0.785398;
-    aspect_ratio = 4.0 / 3.0; 
+    aspect_ratio = (float)window_width / window_height; 
     sensitivity  = 0.001;
     speed        = 20;
 }

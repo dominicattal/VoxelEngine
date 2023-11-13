@@ -9,7 +9,9 @@
 #include "error.h"
 #include "shader.h"
 #include "camera.h"
+#include "texture.h"
 #include "voxel.h"
+#include "globals.h"
 
 typedef std::pair<int, int> vec2i;
 typedef std::unordered_map<vec3f, Voxel*> chunk;
@@ -73,20 +75,8 @@ int main()
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     camera.linkShader(shader);
 
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    int width, height, nrChannels;
-    unsigned char *data = stbi_load("assets/test.jpg", &width, &height, &nrChannels, 0); 
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
+    Texture block_texture("assets/test.jpg");
+    block_texture.use();
 
     Voxel::initalize();
 
@@ -103,7 +93,6 @@ int main()
         processInput(window);
         glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //camera.updateViewMatrix();
         drawChunks(toChunkCoords(camera.position), shader);
         updateDeltaTime();
         glfwPollEvents();

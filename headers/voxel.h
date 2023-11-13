@@ -3,7 +3,6 @@
 #define VOXEL_H
 
 #include <glad.h>
-#include <stb_image.h>
 #include <unordered_map>
 #include "vec3.h"
 #include "shader.h"
