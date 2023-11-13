@@ -6,6 +6,7 @@
 Texture::Texture(const char* image_path)
 {
     glGenTextures(1, &ID);
+    glBindTexture(GL_TEXTURE_2D, ID);
     int width, height, nrChannels;
     unsigned char *data = stbi_load(image_path, &width, &height, &nrChannels, 0); 
     if (data)

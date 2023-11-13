@@ -32,7 +32,6 @@ int render_distance = 5;
 float dt = 0, frame_time;
 Camera camera;
 std::unordered_map<vec2i, chunk*>* chunks;
-unsigned int texture;
 
 
 float mouse_x = window_width / 2;
@@ -171,7 +170,7 @@ void createChunk(vec2i loc, Shader shader)
             for (int k = 0; k < chunk_size; k++)
             {
                 vec3f pos(i + x * chunk_size, - 1 - j, k + y * chunk_size);
-                Voxel* voxel = new Voxel(&shader, pos, voxels, texture);
+                Voxel* voxel = new Voxel(&shader, pos, voxels);
                 voxels->insert({pos, voxel});
             }
         }

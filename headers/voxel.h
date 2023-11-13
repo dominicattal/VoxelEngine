@@ -17,7 +17,7 @@ class Voxel
     vec3f position;
     std::unordered_map<vec3f, Voxel*>* voxels;
 public:
-    Voxel(Shader* shader_, vec3f position_, std::unordered_map<vec3f, Voxel*>* voxels_, unsigned int texture_);
+    Voxel(Shader* shader_, vec3f position_, std::unordered_map<vec3f, Voxel*>* voxels_);
     void draw();
     static void initalize();
 };
