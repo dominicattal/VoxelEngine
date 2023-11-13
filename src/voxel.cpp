@@ -3,6 +3,20 @@
 unsigned int VAOs[6], VBOs[6], EBO, modelID;
 std::unordered_map<vec3f, Voxel*>* voxels;
 
+vec3f dirs[] = {
+    vec3f(0, 0,  1),
+    vec3f(0, 0, -1),
+    vec3f(-1, 0, 0),
+    vec3f( 1, 0, 0),
+    vec3f(0,  1, 0),
+    vec3f(0, -1, 0)
+};
+
+Voxel::Voxel()
+{
+
+}
+
 void initalizeVoxels()
 {
     float left[] = {
@@ -65,6 +79,7 @@ void initalizeVoxels()
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
     }
+    createVoxel(vec3f(0, 0, 0));
 }
 
 void linkVoxelShader(Shader shader)
@@ -72,7 +87,35 @@ void linkVoxelShader(Shader shader)
     modelID = glGetUniformLocation(shader.ID, "model");
 }
 
+void createVoxel(vec3f position)
+{
+    voxels->insert(position, new Voxel());
+}
+
+void drawVoxel(vec3f position)
+{
+    float x = position.x, y = position.y, z = position.z;
+    const float model[] = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        x, y, z, 1
+    };
+    glUniformMatrix4fv(modelID, 1, GL_FALSE, model);
+    for (int i = 0; i < 6; i++)
+    {
+        if (voxels->count(position + dirs[i]) == 0)
+        {
+            glBindVertexArray(VAOs[i]);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+    }
+}
+
 void drawVoxels()
 {
-
+    for (auto pair : voxels)
+    {
+        drawVoxel(pair.first);
+    }
 }

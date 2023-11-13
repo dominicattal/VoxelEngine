@@ -10,15 +10,21 @@
 
 struct Voxel
 {
+    /*
     Texture texture_top;
     Texture texture_bottom;
     Texture texture_right;
     Texture texture_left;
     Texture texture_front;
     Texture texture_back;
+    */
+    Voxel();
 };
 
 void initalizeVoxels();
+void linkVoxelShader(Shader shader);
+void createVoxel(vec3f position);
+void drawVoxel(vec3f position);
 void drawVoxels();
 
 #endif /* VOXEL1_H */
