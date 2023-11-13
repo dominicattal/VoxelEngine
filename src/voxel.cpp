@@ -89,7 +89,7 @@ void linkVoxelShader(Shader shader)
 
 void createVoxel(vec3f position)
 {
-    voxels->insert(position, new Voxel());
+    voxels->insert({position, new Voxel()});
 }
 
 void drawVoxel(vec3f position)
