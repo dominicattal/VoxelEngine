@@ -79,7 +79,18 @@ void initalizeVoxels()
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
     }
-    createVoxel(vec3f(0, 0, 0));
+    voxels = new std::unordered_map<vec3f, Voxel*>();
+
+    for (int i = 0; i < 100; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            for (int k = 0; k < 100; k++)
+            {
+                createVoxel(vec3f(i, -j-1, k));
+            }
+        }
+    }
 }
 
 void linkVoxelShader(Shader shader)
@@ -114,7 +125,7 @@ void drawVoxel(vec3f position)
 
 void drawVoxels()
 {
-    for (auto pair : voxels)
+    for (auto pair : *voxels)
     {
         drawVoxel(pair.first);
     }
