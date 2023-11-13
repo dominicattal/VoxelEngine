@@ -4,12 +4,19 @@
 Camera::Camera()
 {
     position = vec3f(8.5f, 0.0f, 3.0f);
+    facing   = vec3f(1, 0, 0);
+    right    = vec3f(0, 0, -1);
+    up       = vec3f(0, 1, 0);
     yaw = 0.0;
     pitch = 0.0;
     fov = 0.785398;
     sensitivity = 0.001;
     speed = 20;
-    turn(0, 0);
+}
+
+void Camera::linkShader(Shader shader)
+{
+    viewID = glGetUniformLocation(shader.ID, "view");
 }
 
 void Camera::turn(float x_offset, float y_offset)
@@ -27,7 +34,11 @@ void Camera::turn(float x_offset, float y_offset)
     facing.z = sin(yaw) * cos(pitch);
     facing = normalize(facing);
 
-    update();
+    vec3f y_axis = vec3f(0.0f, 1.0f, 0.0f);
+    right = normalize(y_axis * facing);
+    up = facing * right;
+
+    updateViewMatrix();
 }
 
 void Camera::move(vec3f moving, float dt)
@@ -43,12 +54,28 @@ void Camera::move(vec3f moving, float dt)
     //direction.z += right.z  * moving.x;
     direction = normalize(direction);
     position += direction * speed * dt;
+    updateViewMatrix();
 }
 
-void Camera::update()
+void Camera::updateViewMatrix()
 {
-    vec3f y_axis = vec3f(0.0f, 1.0f, 0.0f);
-    right = normalize(y_axis * facing);
-    up = facing * right;
+    float rx, ry, rz; 
+    float ux, uy, uz; 
+    float dx, dy, dz; 
+    float px, py, pz; 
+    float k1, k2, k3;
+    rx = right.x; ry = right.y; rz = right.z;
+    ux = up.x; uy = up.y; uz = up.z;
+    dx = facing.x; dy = facing.y; dz = facing.z;
+    px = -position.x; py = -(position.y + 0.5); pz = -position.z;
+    k1 = px * rx + py * ry + pz * rz;
+    k2 = px * ux + py * uy + pz * uz;
+    k3 = px * dx + py * dy + pz * dz;
+    float view[] = {
+        rx, ux, dx, 0,
+        ry, uy, dy, 0,
+        rz, uz, dz, 0,
+        k1, k2, k3, 1
+    };
+    glUniformMatrix4fv(viewID, 1, GL_FALSE, view);
 }
-

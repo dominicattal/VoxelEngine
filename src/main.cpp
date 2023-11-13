@@ -74,6 +74,7 @@ int main()
 
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     updateProjectionMatrix(shader);
+    camera.linkShader(shader);
 
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -105,7 +106,7 @@ int main()
         processInput(window);
         glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        updateViewMatrix(shader);
+        //camera.updateViewMatrix();
         drawChunks(toChunkCoords(camera.position), shader);
         updateDeltaTime();
         glfwPollEvents();

@@ -7,9 +7,8 @@
 
 #define chunk_size 16
 
-class vec3f 
+struct vec3f 
 {
-public:
     float x, y, z;
     vec3f(float _x, float _y, float _z)
     {
