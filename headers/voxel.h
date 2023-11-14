@@ -8,6 +8,11 @@
 #include "texture.h"
 #include "vec3.h"
 
+enum Type
+{
+    TYPE1, TYPE2
+};
+
 struct Voxel
 {
     /*
