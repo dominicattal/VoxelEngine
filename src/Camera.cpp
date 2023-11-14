@@ -89,7 +89,7 @@ void Camera::updateViewMatrix()
 void Camera::updateProjectionMatrix()
 {
     float near_clip_dis = 0.1f; 
-    float far_clip_dis = 100.0f; 
+    float far_clip_dis = 200.0f; 
     float v1, v2, v3, v4;
     v1 = 1 / (aspect_ratio * tan(fov / 2));
     v2 = 1 / (tan(fov / 2));

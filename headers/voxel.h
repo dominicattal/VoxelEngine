@@ -21,17 +21,12 @@ struct Voxel
     Voxel();
 };
 
+int totalFaces();
 void initalizeVoxels();
-void linkVoxelShader(Shader shader);
 void createVoxel(vec3f position);
 void updateVoxels(vec3f position);
-void drawFace(vec3f position);
+void updateVertexData();
 void drawVoxels();
-void drawLeftFaces();
-void drawRightFaces();
-void drawFrontFaces();
-void drawBackFaces();
-void drawTopFaces();
-void drawBottomFaces();
+void updateTopFaces(vec3f pos, int idx);
 
 #endif /* VOXEL1_H */

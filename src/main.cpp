@@ -69,8 +69,7 @@ int main()
     block_texture.use();
 
     initalizeVoxels();
-    linkVoxelShader(shader);
-
+    
     frame_time = glfwGetTime();
 
     glEnable(GL_DEPTH_TEST);
