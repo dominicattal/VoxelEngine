@@ -3,10 +3,8 @@
 #include <iostream>
 #include "texture.h"
 
-Texture::Texture(const char* image_path)
+void bindTextureData(unsigned int TexID, const char* image_path)
 {
-    glGenTextures(1, &ID);
-    glBindTexture(GL_TEXTURE_2D, ID);
     int width, height, nrChannels;
     unsigned char *data = stbi_load(image_path, &width, &height, &nrChannels, 0); 
     if (data)
@@ -21,7 +19,7 @@ Texture::Texture(const char* image_path)
     stbi_image_free(data);
 }
 
-void bindTexture(Texture texture)
+void bindTexture(unsigned int TexID)
 {
-    glBindTexture(GL_TEXTURE_2D, texture.ID);
+    glBindTexture(GL_TEXTURE_2D, TexID);
 }

@@ -65,8 +65,9 @@ int main()
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     camera.linkShader(shader);
 
-    Texture block_texture("assets/test.jpg");
-    bindTexture(block_texture);
+    unsigned int tex2;
+    bindTexture(tex2);
+    bindTextureData(tex2, "assets/test.jpg");
 
     initalizeBlocks();
     
