@@ -10,7 +10,7 @@
 #include "shader.h"
 #include "camera.h"
 #include "texture.h"
-#include "voxel.h"
+#include "block.h"
 #include "globals.h"
 
 void processInput(GLFWwindow* window);
@@ -66,21 +66,20 @@ int main()
     camera.linkShader(shader);
 
     Texture block_texture("assets/test.jpg");
-    block_texture.use();
+    bindTexture(block_texture);
 
-    initalizeVoxels();
+    initalizeBlocks();
     
     frame_time = glfwGetTime();
 
     glEnable(GL_DEPTH_TEST);
-    int c = 0;
 
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
         glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        drawVoxels();
+        drawBlocks();
         updateDeltaTime();
         glfwPollEvents();
         glfwSwapBuffers(window);

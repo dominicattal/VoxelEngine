@@ -1,8 +1,8 @@
 #pragma once
 #ifndef CAMERA_H
 #define CAMERA_H
-#include <vec3.h> 
-#include <shader.h>
+#include "vec3.h"
+#include "shader.h"
 
 struct Camera
 {

@@ -15,6 +15,7 @@ enum Type
 
 struct Voxel
 {
+    unsigned int VAOs[6], VBOS[6];
     /*
     Texture texture_top;
     Texture texture_bottom;
@@ -23,6 +24,7 @@ struct Voxel
     Texture texture_front;
     Texture texture_back;
     */
+    
     Voxel();
 };
 

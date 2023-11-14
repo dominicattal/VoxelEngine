@@ -6,7 +6,8 @@ struct Texture
 {
     unsigned int ID;
     Texture(const char* image_path);
-    void use();
 };
+
+void bindTexture(Texture texture);
 
 #endif /* TEXTURE_H */

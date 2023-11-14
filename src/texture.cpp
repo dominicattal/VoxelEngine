@@ -21,7 +21,7 @@ Texture::Texture(const char* image_path)
     stbi_image_free(data);
 }
 
-void Texture::use()
+void bindTexture(Texture texture)
 {
-    glBindTexture(GL_TEXTURE_2D, ID);
+    glBindTexture(GL_TEXTURE_2D, texture.ID);
 }

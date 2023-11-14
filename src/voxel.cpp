@@ -1,6 +1,6 @@
+/*
 #include "voxel.h"
 
-/*
     float left[] = {
         0.0f, 0.0f, 1.0f, 0.0, 0.0,
         1.0f, 0.0f, 1.0f, 1.0, 0.0,
@@ -49,7 +49,7 @@
         1.0f, 0.0f, 1.0f, 1.0, 1.0,
         0.0f, 0.0f, 1.0f, 0.0, 1.0 
     };
-*/
+
 
 float* vertex_data;
 unsigned int VAO, VBO;
@@ -233,3 +233,4 @@ void updateTopFaces(vec3f pos, int idx)
     vertex_data[idx+28] = 0.0;
     vertex_data[idx+29] = 1.0;
 }
+*/
