@@ -2,6 +2,10 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+#include <glad.h>
+#include <stb_image.h>
+#include <iostream>
+
 void bindVAO(unsigned int ID);
 void bindVBO(unsigned int ID);
 void bindVBOData(int size, const float* data);

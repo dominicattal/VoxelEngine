@@ -8,18 +8,19 @@
 #include "render.h"
 #include "vec3.h"
 
-enum Blocktype
+enum blocktype
 {
     TYPE1, TYPE2
 };
 
 struct Block
 {
-    unsigned int VAOs[6], VBOs[6], TEXs[6];
+    blocktype type;
     Block();
 };
 
 void initalizeBlocks();
 void drawBlocks();
+void createBlock(vec3f loc);
 
 #endif /* BLOCK_H */
