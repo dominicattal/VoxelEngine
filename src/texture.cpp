@@ -3,7 +3,12 @@
 #include <iostream>
 #include "texture.h"
 
-void bindTextureData(unsigned int TexID, const char* image_path)
+void bindTexture(unsigned int ID)
+{
+    glBindTexture(GL_TEXTURE_2D, ID);
+}
+
+void bindTextureData(const char* image_path)
 {
     int width, height, nrChannels;
     unsigned char *data = stbi_load(image_path, &width, &height, &nrChannels, 0); 
@@ -19,7 +24,3 @@ void bindTextureData(unsigned int TexID, const char* image_path)
     stbi_image_free(data);
 }
 
-void bindTexture(unsigned int TexID)
-{
-    glBindTexture(GL_TEXTURE_2D, TexID);
-}
