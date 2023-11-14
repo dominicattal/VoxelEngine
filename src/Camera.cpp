@@ -10,7 +10,7 @@ Camera::Camera()
     up           = vec3f(0, 1, 0);
     yaw          = 0.0;
     pitch        = 0.0;
-    fov          = 0.785398;
+    fov          = PI / 4;
     aspect_ratio = (float)window_width / window_height; 
     sensitivity  = 0.001;
     speed        = 20;
