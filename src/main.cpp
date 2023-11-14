@@ -65,10 +65,6 @@ int main()
     Shader shader("shaders/vertex.sl", "shaders/fragment.sl");
     camera.linkShader(shader);
 
-    unsigned int tex2;
-    bindTexture(tex2);
-    bindTextureData("assets/test.jpg");
-
     initalizeBlocks();
     
     frame_time = glfwGetTime();
