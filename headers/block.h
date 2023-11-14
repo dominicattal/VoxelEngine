@@ -5,7 +5,7 @@
 #include <map>
 #include <unordered_map>
 #include "shader.h"
-#include "texture.h"
+#include "render.h"
 #include "vec3.h"
 
 enum Blocktype
@@ -15,16 +15,7 @@ enum Blocktype
 
 struct Block
 {
-    unsigned int VAOs[6], VBOS[6];
-    /*
-    Texture texture_top;
-    Texture texture_bottom;
-    Texture texture_right;
-    Texture texture_left;
-    Texture texture_front;
-    Texture texture_back;
-    */
-    
+    unsigned int VAOs[6], VBOs[6], TEXs[6];
     Block();
 };
 

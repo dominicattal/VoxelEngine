@@ -9,7 +9,7 @@
 #include "error.h"
 #include "shader.h"
 #include "camera.h"
-#include "texture.h"
+#include "render.h"
 #include "block.h"
 #include "globals.h"
 
@@ -67,7 +67,7 @@ int main()
 
     unsigned int tex2;
     bindTexture(tex2);
-    bindTextureData(tex2, "assets/test.jpg");
+    bindTextureData("assets/test.jpg");
 
     initalizeBlocks();
     

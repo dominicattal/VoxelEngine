@@ -5,7 +5,7 @@
 #include <map>
 #include <unordered_map>
 #include "shader.h"
-#include "texture.h"
+#include "render.h"
 #include "vec3.h"
 
 enum Type
