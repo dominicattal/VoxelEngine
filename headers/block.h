@@ -14,6 +14,16 @@ enum blocktype
     TYPE2 = 1
 };
 
+enum Face 
+{
+    LEFT   = 0,
+    RIGHT  = 1,
+    FRONT  = 2,
+    BACK   = 3,
+    TOP    = 4,
+    BOTTOM = 5
+};
+
 struct Block
 {
     blocktype type;
@@ -22,18 +32,16 @@ struct Block
 
 struct TypeTextures
 {
-    unsigned int VAOs[6], VBOs[6], TEXs[6];
-    std::unordered_map<vec3f, Block*>* left;
-    std::unordered_map<vec3f, Block*>* right;
-    std::unordered_map<vec3f, Block*>* front;
-    std::unordered_map<vec3f, Block*>* back;
-    std::unordered_map<vec3f, Block*>* top;
-    std::unordered_map<vec3f, Block*>* bottom;
+    unsigned int VAOs[6], VBOs[6], TEXs[6], sizes[6];
+    std::unordered_set<vec3f>* faces;
     TypeTextures();
+    void updateFace(Face face);
+    void drawFaces();
 };
 
 void initalizeBlocks();
 void drawBlocks();
-void createBlock(vec3f loc);
+void createBlock(blocktype type, vec3f position);
+void updatePosition(vec3f position);
 
 #endif /* BLOCK_H */

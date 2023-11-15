@@ -11,5 +11,6 @@ void bindVBO(unsigned int ID);
 void bindVBOData(int size, const float* data);
 void bindTexture(unsigned int ID);
 void bindTextureData(const char* image_path);
+void drawTriangles(int vertex_count);
 
 #endif /* RENDER_H */

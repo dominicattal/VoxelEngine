@@ -4,10 +4,12 @@ void bindVAO(unsigned int ID)
 {
     glBindVertexArray(ID);
 }
+
 void bindVBO(unsigned int ID)
 {
     glBindBuffer(GL_ARRAY_BUFFER, ID);
 }
+
 void bindVBOData(int size, const float* data)
 {
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
@@ -16,6 +18,7 @@ void bindVBOData(int size, const float* data)
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 }
+
 void bindTexture(unsigned int ID)
 {
     glBindTexture(GL_TEXTURE_2D, ID);
@@ -35,4 +38,9 @@ void bindTextureData(const char* image_path)
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+}
+
+void drawTriangles(int vertex_count)
+{
+    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 }
