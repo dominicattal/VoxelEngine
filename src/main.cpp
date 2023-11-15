@@ -118,10 +118,14 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
+    /*
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    */
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        createBlockAtCamera(floor(camera.position));
 }
 
 void mouseCallback(GLFWwindow* window, double xpos, double ypos)

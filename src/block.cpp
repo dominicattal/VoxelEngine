@@ -147,6 +147,20 @@ void createBlock(blocktype type, vec3f position)
     updatePosition(position);
 }
 
+void createBlockAtCamera(vec3f position)
+{
+    blocks->insert({position, new Block(TYPE1)});
+    updatePosition(position);
+    for (int type = 0; type < NUM_TYPES; type++)
+    {
+        TypeTextures type_texs = textures->at(static_cast<blocktype>(type));
+        for (int face = 0; face < 6; face++)
+        {
+            type_texs.updateVertexData(static_cast<Face>(face));
+        }
+    }
+}
+
 void updatePosition(vec3f position)
 {
     if (blocks->count(position) > 0)
@@ -196,7 +210,6 @@ TypeTextures::TypeTextures(blocktype type)
 
 void TypeTextures::updateVertexData(Face face)
 {
-    delete[] vertex_data[face];
     int size = faces[face]->size();
     vertex_data[face] = new float[size * 6 * 5];
     int idx = 0;

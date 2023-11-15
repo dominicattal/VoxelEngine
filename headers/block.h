@@ -47,6 +47,7 @@ struct TypeTextures
 void initalizeBlocks();
 void drawBlocks();
 void createBlock(blocktype type, vec3f position);
+void createBlockAtCamera(vec3f position);
 void updatePosition(vec3f position);
 
 #endif /* BLOCK_H */
