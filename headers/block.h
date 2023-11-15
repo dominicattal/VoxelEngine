@@ -35,7 +35,7 @@ struct Block
 void initalizeBlocks();
 void drawBlocks();
 void createBlock(blocktype type, vec3f position);
-void updateVertexData();
 void updatePosition(vec3f position);
+void updateVertexData();
 
 #endif /* BLOCK_H */
