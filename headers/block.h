@@ -33,9 +33,11 @@ struct Block
 struct TypeTextures
 {
     unsigned int VAOs[6], VBOs[6], TEXs[6], sizes[6];
-    std::unordered_set<vec3f>* faces;
+    float* vertex_data[6];
+    std::unordered_set<vec3f>* faces[6];
     TypeTextures();
-    void updateFace(Face face);
+    void updateFace(vec3f position, Face face);
+    void updateVertexData(Face face);
     void drawFaces();
 };
 
