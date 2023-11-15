@@ -88,17 +88,20 @@ void initalizeBlocks()
     }
 
     int l = 0;
-    for (int i = 0; i < 1001; i++)
+    for (int i = 0; i < 101; i++)
     {
         for (int j = 0; j < 5; j++)
         {
-            for (int k = 0; k < 1001; k++)
+            for (int k = 0; k < 101; k++)
             {
                 if (l % 100000 == 0)
                 {
                     std::cout << l << std::endl;
                 }
-                createBlock(TYPE1, vec3f(i, -j-1, k));
+                if (l % 2 == 0)
+                    createBlock(TYPE1, vec3f(i, -j-1, k));
+                else
+                    createBlock(TYPE2, vec3f(i, -j-1, k));
                 l++;
             }
         }
