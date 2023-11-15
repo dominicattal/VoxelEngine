@@ -4,6 +4,7 @@
 unsigned int VAO, VBO, TEX;
 float* vertex_data;
 std::unordered_map<vec3f, Block*>* blocks = new std::unordered_map<vec3f, Block*>();
+std::unordered_map<Face, float*> coords;
 
 vec3f dirs[] = {
     vec3f(0, 0,  1),
