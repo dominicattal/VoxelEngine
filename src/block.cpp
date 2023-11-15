@@ -8,8 +8,6 @@ std::unordered_map<vec3f, Block*>* blocks;
 std::unordered_map<Face, std::unordered_map<vec3f, blocktype>*> faces;
 std::unordered_map<Face, float*> coords;
 
-
-
 vec3f dirs[] = {
     vec3f(0, 0,  1),
     vec3f(0, 0, -1),
@@ -17,6 +15,15 @@ vec3f dirs[] = {
     vec3f( 1, 0, 0),
     vec3f(0,  1, 0),
     vec3f(0, -1, 0)
+};
+
+Face opposite_face[] = {
+    RIGHT,
+    LEFT,
+    BACK,
+    FRONT,
+    BOTTOM,
+    TOP
 };
 
 float left[] = {
@@ -98,13 +105,13 @@ void initalizeBlocks()
     bindTextureData("assets/block_sheet.png");
 
     int l = 0;
-    for (int i = 0; i < 11; i++)
+    for (int i = 0; i < 1001; i++)
     {
         for (int j = 0; j < 5; j++)
         {
-            for (int k = 0; k < 11; k++)
+            for (int k = 0; k < 1001; k++)
             {
-                if (l % 1000 == 0)
+                if (l % 10000 == 0)
                 {
                     std::cout << l << std::endl;
                 }
@@ -137,10 +144,22 @@ void updatePosition(vec3f position)
     if (blocks->count(position) > 0)
     {
         Block* block = blocks->at(position);
-        faces[TOP]->insert({position, block->type});
-        num_faces++;
-        faces[RIGHT]->insert({position, block->type});
-        num_faces++;
+        for (int i = 0; i < 6; i++)
+        {
+            Face face = static_cast<Face>(i);
+            vec3f other_pos = position + dirs[face];
+            Face other_face = opposite_face[face];
+            if (blocks->count(other_pos))
+            {
+                faces[other_face]->erase(other_pos);
+                num_faces--;
+            }
+            else
+            {
+                faces[face]->insert({position, block->type});
+                num_faces++;
+            }
+        }
     }
 }
 
