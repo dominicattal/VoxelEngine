@@ -37,7 +37,7 @@ struct TypeTextures
     unsigned int VAOs[6], VBOs[6], TEXs[6], sizes[6];
     float* vertex_data[6];
     std::unordered_set<vec3f>* faces[6];
-    TypeTextures();
+    TypeTextures(blocktype type);
     void updateVertexData(Face face);
     void drawFaces();
     void insert(vec3f position, Face face);

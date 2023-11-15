@@ -7,6 +7,16 @@ std::unordered_map<blocktype, std::string> type_to_string =
     {TYPE2, "type2"}
 };
 
+std::unordered_map<Face, std::string> face_to_string =
+{
+    {LEFT, "left"},
+    {RIGHT, "right"},
+    {FRONT, "front"},
+    {BACK, "back"},
+    {TOP, "top"},
+    {BOTTOM, "bottom"}
+};
+
 std::unordered_map<vec3f, Block*>* blocks = new std::unordered_map<vec3f, Block*>();
 std::unordered_map<blocktype, TypeTextures>* textures = new std::unordered_map<blocktype, TypeTextures>();
 std::unordered_map<Face, float*> coords;
@@ -87,9 +97,9 @@ void initalizeBlocks()
     coords[TOP]    = top;
     coords[BOTTOM] = bottom;
 
-    for (int type = 0; type <= NUM_TYPES; type++)
+    for (int type = 0; type < NUM_TYPES; type++)
     {
-        TypeTextures type_texs;
+        TypeTextures type_texs(static_cast<blocktype>(type));
         textures->insert({static_cast<blocktype>(type), type_texs});
     }
 
@@ -113,7 +123,7 @@ void initalizeBlocks()
         }
     }
  
-    for (int type = 0; type <= NUM_TYPES; type++)
+    for (int type = 0; type < NUM_TYPES; type++)
     {
         TypeTextures type_texs = textures->at(static_cast<blocktype>(type));
         for (int face = 0; face < 6; face++)
@@ -167,22 +177,26 @@ Block::Block(blocktype type_)
     type = type_;
 }
 
-TypeTextures::TypeTextures()
+TypeTextures::TypeTextures(blocktype type)
 {
     glGenVertexArrays(6, VAOs);
     glGenBuffers(6, VBOs);
     glGenTextures(6, TEXs);
     for (int i = 0; i < 6; i++)
-    {    
-        bindTexture(TEXs[i]);
-        bindTextureData("assets/type1.png");
-        vertex_data[i] = new float[0];
-        faces[i] = new std::unordered_set<vec3f>();
+    {  
+        Face face = static_cast<Face>(i);  
+        bindTexture(TEXs[face]);
+        std::string path = "assets/" + type_to_string[type] + "/" + 
+            type_to_string[type] + "_" + face_to_string[face] + ".png";
+        bindTextureData(path.c_str());
+        vertex_data[face] = new float[0];
+        faces[face] = new std::unordered_set<vec3f>();
     }
 }
 
 void TypeTextures::updateVertexData(Face face)
 {
+    delete[] vertex_data[face];
     int size = faces[face]->size();
     vertex_data[face] = new float[size * 6 * 5];
     int idx = 0;
