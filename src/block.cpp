@@ -14,6 +14,15 @@ vec3f dirs[] = {
     vec3f(0, -1, 0)
 };
 
+Face opposite_face[] = {
+    RIGHT,
+    LEFT,
+    BACK,
+    FRONT,
+    BOTTOM,
+    TOP
+};
+
 float left[] = {
     0.0f, 0.0f, 1.0f, 0.0, 0.0,
     1.0f, 0.0f, 1.0f, 1.0, 0.0,
@@ -79,13 +88,13 @@ void initalizeBlocks()
     }
 
     int l = 0;
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 1001; i++)
     {
-        for (int j = 0; j < 2; j++)
+        for (int j = 0; j < 5; j++)
         {
-            for (int k = 0; k < 100; k++)
+            for (int k = 0; k < 1001; k++)
             {
-                if (l % 1000 == 0)
+                if (l % 100000 == 0)
                 {
                     std::cout << l << std::endl;
                 }
@@ -128,7 +137,18 @@ void updatePosition(vec3f position)
         for (int i = 0; i < 6; i++)
         {
             Face face = static_cast<Face>(i);
-            texture.insert(position, face);
+            vec3f other_pos = position + dirs[face];
+            Face other_face = opposite_face[face];
+            if (blocks->count(other_pos))
+            {
+                Block* other_block = blocks->at(other_pos);
+                TypeTextures other_texture = textures->at(other_block->type);
+                other_texture.erase(other_pos, other_face);
+            }
+            else
+            {
+                texture.insert(position, face);
+            }
         }
     }
 }
