@@ -105,13 +105,13 @@ void initalizeBlocks()
     bindTextureData("assets/block_sheet.png");
 
     int l = 0;
-    for (int i = 0; i < 1001; i++)
+    for (int i = 0; i < 101; i++)
     {
         for (int j = 0; j < 5; j++)
         {
-            for (int k = 0; k < 1001; k++)
+            for (int k = 0; k < 101; k++)
             {
-                if (l % 10000 == 0)
+                if (l % 100000 == 0)
                 {
                     std::cout << l << std::endl;
                 }
@@ -123,7 +123,7 @@ void initalizeBlocks()
             }
         }
     }
-    std::cout << num_faces << std::endl;
+
     updateVertexData();
 }
 
