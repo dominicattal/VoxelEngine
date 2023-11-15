@@ -32,21 +32,10 @@ struct Block
     Block(blocktype type_);
 };
 
-struct TypeTextures
-{
-    unsigned int VAOs[6], VBOs[6], TEXs[6], sizes[6];
-    float* vertex_data[6];
-    std::unordered_set<vec3f>* faces[6];
-    TypeTextures();
-    void updateVertexData(Face face);
-    void drawFaces();
-    void insert(vec3f position, Face face);
-    void erase(vec3f position, Face face);
-};
-
 void initalizeBlocks();
 void drawBlocks();
 void createBlock(blocktype type, vec3f position);
+void updateVertexData();
 void updatePosition(vec3f position);
 
 #endif /* BLOCK_H */

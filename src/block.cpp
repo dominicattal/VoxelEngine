@@ -1,9 +1,9 @@
 #include "block.h"
 #include <iostream>
 
+unsigned int VAO, VBO, TEX;
+float* vertex_data;
 std::unordered_map<vec3f, Block*>* blocks = new std::unordered_map<vec3f, Block*>();
-std::unordered_map<blocktype, TypeTextures>* textures = new std::unordered_map<blocktype, TypeTextures>();
-std::unordered_map<Face, float*> coords;
 
 vec3f dirs[] = {
     vec3f(0, 0,  1),
@@ -65,19 +65,9 @@ float bottom[] = {
 
 void initalizeBlocks()
 {
-    coords[LEFT]   = left;
-    coords[RIGHT]  = right;
-    coords[FRONT]  = front;
-    coords[BACK]   = back;
-    coords[TOP]    = top;
-    coords[BOTTOM] = bottom;
-
-    for (int type = 0; type <= NUM_TYPES; type++)
-    {
-        TypeTextures type_texs;
-        textures->insert({static_cast<blocktype>(type), type_texs});
-    }
-
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenTextures(1, &TEX);
     int l = 0;
     for (int i = 0; i < 100; i++)
     {
@@ -94,23 +84,12 @@ void initalizeBlocks()
             }
         }
     }
- 
-    for (int type = 0; type <= NUM_TYPES; type++)
-    {
-        TypeTextures type_texs = textures->at(static_cast<blocktype>(type));
-        for (int face = 0; face < 6; face++)
-        {
-            type_texs.updateVertexData(static_cast<Face>(face));
-        }
-    }
 }
 
 void drawBlocks()
 {
-    for (auto pair : *textures)
-    {
-        pair.second.drawFaces();
-    }
+    bindVAO(VAO);
+    drawTriangles(blocks->size() * 6);
 }
 
 void createBlock(blocktype type, vec3f position)
