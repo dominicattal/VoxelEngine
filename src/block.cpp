@@ -1,6 +1,12 @@
 #include "block.h"
 #include <iostream>
 
+std::unordered_map<blocktype, std::string> type_to_string = 
+{
+    {TYPE1, "type1"},
+    {TYPE2, "type2"}
+};
+
 std::unordered_map<vec3f, Block*>* blocks = new std::unordered_map<vec3f, Block*>();
 std::unordered_map<blocktype, TypeTextures>* textures = new std::unordered_map<blocktype, TypeTextures>();
 std::unordered_map<Face, float*> coords;
