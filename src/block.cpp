@@ -3,6 +3,7 @@
 
 std::unordered_map<vec3f, Block*>* blocks = new std::unordered_map<vec3f, Block*>();
 std::unordered_map<blocktype, TypeTextures>* textures = new std::unordered_map<blocktype, TypeTextures>();
+std::unordered_map<Face, float*> coords;
 
 vec3f dirs[] = {
     vec3f(0, 0,  1),
@@ -13,22 +14,93 @@ vec3f dirs[] = {
     vec3f(0, -1, 0)
 };
 
+float left[] = {
+    0.0f, 0.0f, 1.0f, 0.0, 0.0,
+    1.0f, 0.0f, 1.0f, 1.0, 0.0,
+    0.0f, 1.0f, 1.0f, 0.0, 1.0,
+    1.0f, 0.0f, 1.0f, 1.0, 0.0,
+    1.0f, 1.0f, 1.0f, 1.0, 1.0,  
+    0.0f, 1.0f, 1.0f, 0.0, 1.0
+};
+float right[] = {
+    1.0f, 1.0f, 0.0f, 1.0, 1.0,  
+    1.0f, 0.0f, 0.0f, 1.0, 0.0,
+    0.0f, 1.0f, 0.0f, 0.0, 1.0,
+    1.0f, 0.0f, 0.0f, 1.0, 0.0,
+    0.0f, 0.0f, 0.0f, 0.0, 0.0,
+    0.0f, 1.0f, 0.0f, 0.0, 1.0  
+};
+float front[] = {
+    0.0f, 1.0f, 1.0f, 1.0, 0.0,
+    0.0f, 1.0f, 0.0f, 1.0, 1.0,
+    0.0f, 0.0f, 1.0f, 0.0, 0.0,
+    0.0f, 1.0f, 0.0f, 1.0, 1.0,
+    0.0f, 0.0f, 0.0f, 0.0, 1.0,
+    0.0f, 0.0f, 1.0f, 0.0, 0.0
+};
+float back[] = {
+    1.0f, 0.0f, 0.0f, 0.0, 0.0,
+    1.0f, 1.0f, 0.0f, 1.0, 0.0,
+    1.0f, 0.0f, 1.0f, 0.0, 1.0,
+    1.0f, 1.0f, 0.0f, 1.0, 0.0,
+    1.0f, 1.0f, 1.0f, 1.0, 1.0,
+    1.0f, 0.0f, 1.0f, 0.0, 1.0
+};
+float top[] = {
+    1.0f,  1.0f, 1.0f, 1.0, 1.0,
+    1.0f,  1.0f, 0.0f, 1.0, 0.0,
+    0.0f,  1.0f, 1.0f, 0.0, 1.0, 
+    1.0f,  1.0f, 0.0f, 1.0, 0.0,
+    0.0f,  1.0f, 0.0f, 0.0, 0.0,
+    0.0f,  1.0f, 1.0f, 0.0, 1.0
+};
+float bottom[] = {
+    0.0f, 0.0f, 0.0f, 0.0, 0.0,
+    1.0f, 0.0f, 0.0f, 1.0, 0.0,
+    0.0f, 0.0f, 1.0f, 0.0, 1.0,
+    1.0f, 0.0f, 0.0f, 1.0, 0.0,
+    1.0f, 0.0f, 1.0f, 1.0, 1.0,
+    0.0f, 0.0f, 1.0f, 0.0, 1.0 
+};
+
 void initalizeBlocks()
 {
-    for (int type = 0; type <= 1; type++)
+    coords[LEFT]   = left;
+    coords[RIGHT]  = right;
+    coords[FRONT]  = front;
+    coords[BACK]   = back;
+    coords[TOP]    = top;
+    coords[BOTTOM] = bottom;
+
+    for (int type = 0; type <= NUM_TYPES; type++)
     {
         TypeTextures type_texs;
         textures->insert({static_cast<blocktype>(type), type_texs});
     }
 
-    for (int i = 0; i < 10; i++)
+    int l = 0;
+    for (int i = 0; i < 100; i++)
     {
         for (int j = 0; j < 2; j++)
         {
-            for (int k = 0; k < 10; k++)
+            for (int k = 0; k < 100; k++)
             {
+                if (l % 1000 == 0)
+                {
+                    std::cout << l << std::endl;
+                }
                 createBlock(TYPE1, vec3f(i, -j-1, k));
+                l++;
             }
+        }
+    }
+ 
+    for (int type = 0; type <= NUM_TYPES; type++)
+    {
+        TypeTextures type_texs = textures->at(static_cast<blocktype>(type));
+        for (int face = 0; face < 6; face++)
+        {
+            type_texs.updateVertexData(static_cast<Face>(face));
         }
     }
 }
@@ -53,7 +125,11 @@ void updatePosition(vec3f position)
     {
         Block* block = blocks->at(position);
         TypeTextures texture = textures->at(block->type);
-        texture.updateFace(position, TOP);
+        for (int i = 0; i < 6; i++)
+        {
+            Face face = static_cast<Face>(i);
+            texture.insert(position, face);
+        }
     }
 }
 
@@ -76,62 +152,49 @@ TypeTextures::TypeTextures()
     }
 }
 
-void TypeTextures::updateFace(vec3f position, Face face)
+void TypeTextures::updateVertexData(Face face)
 {
-    std::unordered_set<vec3f>* face_data = faces[face];
-    face_data->insert(position);
-    delete[] vertex_data[face];
-    int size = face_data->size();
+    int size = faces[face]->size();
     vertex_data[face] = new float[size * 6 * 5];
-
     int idx = 0;
-    for (auto pos : *face_data)
+    for (auto pos : *(faces[face]))
     {
-        vertex_data[face][idx]    = pos.x + 1;
-        vertex_data[face][idx+1]  = pos.y + 1;
-        vertex_data[face][idx+2]  = pos.z + 1;
-        vertex_data[face][idx+3]  = 1.0;
-        vertex_data[face][idx+4]  = 1.0;
-        vertex_data[face][idx+5]  = pos.x + 1;
-        vertex_data[face][idx+6]  = pos.y + 1;
-        vertex_data[face][idx+7]  = pos.z;
-        vertex_data[face][idx+8]  = 1.0;
-        vertex_data[face][idx+9]  = 0.0;
-        vertex_data[face][idx+10] = pos.x;
-        vertex_data[face][idx+11] = pos.y + 1;
-        vertex_data[face][idx+12] = pos.z + 1;
-        vertex_data[face][idx+13] = 0.0;
-        vertex_data[face][idx+14] = 1.0;
-        vertex_data[face][idx+15] = pos.x + 1;
-        vertex_data[face][idx+16] = pos.y + 1;
-        vertex_data[face][idx+17] = pos.z;
-        vertex_data[face][idx+18] = 1.0;
-        vertex_data[face][idx+19] = 0.0;
-        vertex_data[face][idx+20] = pos.x ;
-        vertex_data[face][idx+21] = pos.y + 1;
-        vertex_data[face][idx+22] = pos.z;
-        vertex_data[face][idx+23] = 0.0;
-        vertex_data[face][idx+24] = 0.0;
-        vertex_data[face][idx+25] = pos.x;
-        vertex_data[face][idx+26] = pos.y + 1;
-        vertex_data[face][idx+27] = pos.z + 1;
-        vertex_data[face][idx+28] = 0.0;
-        vertex_data[face][idx+29] = 1.0;        
+        vertex_data[face][idx]    = pos.x + coords[face][0];
+        vertex_data[face][idx+1]  = pos.y + coords[face][1];
+        vertex_data[face][idx+2]  = pos.z + coords[face][2];
+        vertex_data[face][idx+3]  = coords[face][3];
+        vertex_data[face][idx+4]  = coords[face][4];
+        vertex_data[face][idx+5]  = pos.x + coords[face][5];
+        vertex_data[face][idx+6]  = pos.y + coords[face][6];
+        vertex_data[face][idx+7]  = pos.z + coords[face][7];
+        vertex_data[face][idx+8]  = coords[face][8];
+        vertex_data[face][idx+9]  = coords[face][9];
+        vertex_data[face][idx+10] = pos.x + coords[face][10];
+        vertex_data[face][idx+11] = pos.y + coords[face][11];
+        vertex_data[face][idx+12] = pos.z + coords[face][12];
+        vertex_data[face][idx+13] = coords[face][13];
+        vertex_data[face][idx+14] = coords[face][14];
+        vertex_data[face][idx+15] = pos.x + coords[face][15];
+        vertex_data[face][idx+16] = pos.y + coords[face][16];
+        vertex_data[face][idx+17] = pos.z + coords[face][17];
+        vertex_data[face][idx+18] = coords[face][18];
+        vertex_data[face][idx+19] = coords[face][19];
+        vertex_data[face][idx+20] = pos.x + coords[face][20];
+        vertex_data[face][idx+21] = pos.y + coords[face][21];
+        vertex_data[face][idx+22] = pos.z + coords[face][22];
+        vertex_data[face][idx+23] = coords[face][23];
+        vertex_data[face][idx+24] = coords[face][24];
+        vertex_data[face][idx+25] = pos.x + coords[face][25];
+        vertex_data[face][idx+26] = pos.y + coords[face][26];
+        vertex_data[face][idx+27] = pos.z + coords[face][27];
+        vertex_data[face][idx+28] = coords[face][28];
+        vertex_data[face][idx+29] = coords[face][29];        
         idx += 30;
     }
 
-    glBindVertexArray(VAOs[face]);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[face]);
-    glBufferData(GL_ARRAY_BUFFER, size * 6 * 5 * sizeof(float), vertex_data[face], GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-}
-
-void TypeTextures::updateVertexData(Face face)
-{
-    
+    bindVAO(VAOs[face]);
+    bindVBO(VBOs[face]);
+    bindVBOData(size * 6 * 5 * sizeof(float), vertex_data[face]);
 }
 
 void TypeTextures::drawFaces()
@@ -140,6 +203,16 @@ void TypeTextures::drawFaces()
     {
         bindVAO(VAOs[i]);
         bindTexture(TEXs[i]);
-        drawTriangles(200 * 6);
+        drawTriangles(faces[i]->size() * 6);
     }
+}
+
+void TypeTextures::insert(vec3f position, Face face)
+{
+    faces[face]->insert(position);
+}
+
+void TypeTextures::erase(vec3f position, Face face)
+{
+    faces[face]->erase(position);
 }

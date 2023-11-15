@@ -8,6 +8,8 @@
 #include "render.h"
 #include "vec3.h"
 
+#define NUM_TYPES 2
+
 enum blocktype
 {
     TYPE1 = 0, 
@@ -36,9 +38,10 @@ struct TypeTextures
     float* vertex_data[6];
     std::unordered_set<vec3f>* faces[6];
     TypeTextures();
-    void updateFace(vec3f position, Face face);
     void updateVertexData(Face face);
     void drawFaces();
+    void insert(vec3f position, Face face);
+    void erase(vec3f position, Face face);
 };
 
 void initalizeBlocks();
